@@ -1,0 +1,48 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      ".editorconfig": true,
+      ".eslintignore": true,
+      ".eslintrc.js": true,
+      ".gitignore": true,
+      "node_modules": true,
+      "package-lock.json": true,
+      "tsconfig.json": true
+    },
+    "typescript.tsdk": "node_modules\\typescript\\lib"
+  },
+  "launch": {
+    "configurations": [
+      {
+        "command": "npm start",
+        "name": "Start",
+        "request": "launch",
+        "type": "node-terminal"
+      },
+      {
+        "command": "npm run build",
+        "name": "Build",
+        "request": "launch",
+        "type": "node-terminal"
+      },
+      {
+        "command": "npm run serve",
+        "name": "Serve build",
+        "request": "launch",
+        "type": "node-terminal"
+      },
+      {
+        "name": "Launch Edge",
+        "request": "launch",
+        "type": "msedge",
+        "url": "http://localhost:3000/sofloc",
+        "webRoot": "${workspaceFolder}"
+      }
+    ]
+  }
+}
