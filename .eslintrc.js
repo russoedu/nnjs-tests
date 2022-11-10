@@ -18,6 +18,12 @@ module.exports = {
     sourceType:  'module',
   },
   rules: {
+    // P5 specific rules
+    'no-new':                                   0,
+    'new-cap':                                  0,
+    '@typescript-eslint/no-non-null-assertion': 0,
+
+    'no-undef':                  0,
     'no-redeclare':              'off',
     'no-throw-literal':          0,
     '@typescript-eslint/indent': 'off', // This is the job of StandardJS
@@ -54,12 +60,7 @@ module.exports = {
     'no-unused-vars':                                    'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-explicit-any':                'off',
-    '@typescript-eslint/no-unused-vars':                 [
-      'error',
-      {
-        varsIgnorePattern: '^env$|^_.+?',
-      },
-    ],
-    'multiline-comment-style': ['error', 'starred-block'],
+    '@typescript-eslint/no-unused-vars':                 0,
+    'multiline-comment-style':                           ['error', 'starred-block'],
   },
 }
