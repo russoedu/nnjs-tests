@@ -26,7 +26,6 @@ new p5((p: p5) => {
   p.setup = function () {
     canvasSize = p.windowHeight - 10
     const canvas = p.createCanvas(canvasSize, canvasSize)
-    canvas.parent('canvas-container')
 
     /*
      * The perceptron has 3 inputs -- x, y, and bias
@@ -69,11 +68,10 @@ new p5((p: p5) => {
      */
     p.stroke(255, 0, 0)
     p.strokeWeight(1)
-    const weights = perceptron.getWeights()
     x1 = xMin
-    y1 = (-weights[2] - weights[0] * x1) / weights[1]
+    y1 = (-perceptron.weights[2] - perceptron.weights[0] * x1) / perceptron.weights[1]
     x2 = xMax
-    y2 = (-weights[2] - weights[0] * x2) / weights[1]
+    y2 = (-perceptron.weights[2] - perceptron.weights[0] * x2) / perceptron.weights[1]
 
     x1 = p.map(x1, xMin, xMax, 0, p.width)
     y1 = p.map(y1, yMin, yMax, p.height, 0)
@@ -105,4 +103,4 @@ new p5((p: p5) => {
       p.ellipse(x, y, 4, 4)
     }
   }
-}, document.getElementById('canvas-container')!)
+}, document.getElementById('app')!)

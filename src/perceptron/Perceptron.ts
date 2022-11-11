@@ -1,26 +1,28 @@
 import p5 from 'p5'
 
 export class Perceptron {
-  public weights: any
-  public c: any
+  public weights: number[]
+  public learningRate: number
 
-  constructor (n: number, c: number, p: p5) {
+  constructor (arrayEntries: number, learningRate: number, p: p5) {
     // Array of weights for inputs
-    this.weights = new Array(n)
+    this.weights = new Array(arrayEntries)
     // Start with random weights
     for (let i = 0; i < this.weights.length; i++) {
       this.weights[i] = p.random(-1, 1)
     }
-    this.c = c // learning rate/constant
+    this.learningRate = learningRate // learning rate/constant
   }
 
   /*
    * Function to train the Perceptron
    * Weights are adjusted based on "desired" answer
    */
-  train (inputs: number[], desired: number) {
+  train (inputs: [number, number], desired: number) {
     // Guess the result
     const guess = this.feedforward(inputs)
+    console.log(guess === desired ? '✔️' : '❌', inputs)
+
     /*
      * Compute the factor for changing the weight based on the error
      * Error = desired output - guessed output
@@ -30,12 +32,12 @@ export class Perceptron {
     const error = desired - guess
     // Adjust weights based on weightChange * input
     for (let i = 0; i < this.weights.length; i++) {
-      this.weights[i] += this.c * error * inputs[i]
+      this.weights[i] += this.learningRate * error * inputs[i]
     }
   }
 
   // Guess -1 or 1 based on input values
-  feedforward (inputs: number[]) {
+  feedforward (inputs: [number, number]) {
     // Sum all values
     let sum = 0
     for (let i = 0; i < this.weights.length; i++) {
@@ -48,10 +50,5 @@ export class Perceptron {
   activate (sum: number) {
     if (sum > 0) return 1
     else return -1
-  }
-
-  // Return weights
-  getWeights () {
-    return this.weights
   }
 }
