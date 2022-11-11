@@ -1,0 +1,13 @@
+nav {
+  display: flex;
+}
+.navbar-item {
+  /* flex-grow: 0; */
+  padding-right: 1em;
+}
+
+.buttons {
+  flex-grow: 1;
+  display: flex;
+  justify-content: flex-end;
+}

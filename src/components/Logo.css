@@ -1,0 +1,19 @@
+.logo {
+  flex-grow: 4;
+  height: 60px;
+}
+
+.logo-text {
+  padding-top: 6px;
+}
+
+.logo a {
+  font-family: 'Madi', Fallback, sans-serif;
+  font-size: 45px;
+}
+
+@media (max-width: 600px) {
+  .logo-text {
+    display: none;
+  }
+}

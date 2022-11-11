@@ -1,0 +1,8 @@
+a > img {
+  padding-right: 10px;
+}
+
+.formula {
+  filter: invert(100%) saturate(100%) brightness(100%) contrast(100%);
+  max-width: 100%;
+}

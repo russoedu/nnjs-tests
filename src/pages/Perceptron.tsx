@@ -1,11 +1,16 @@
+import { Container, Paper } from '@mui/material'
 import p5 from 'p5'
-import { Perceptron } from './Perceptron'
-import './style.css'
+import { useState } from 'react'
+import Sketch from 'react-p5'
+import { PerceptronModule } from '../modules/Perceptron'
+import './Perceptron.css'
 
-new p5((p: p5) => {
+
+
+export function Perceptron () {
   const training = new Array(1000)
   // A Perceptron object
-  let perceptron: Perceptron
+  let perceptron: PerceptronModule
 
   // We will train the perceptron with one "Point" object at a time
   let count = 0
@@ -23,15 +28,16 @@ new p5((p: p5) => {
     return y
   }
 
-  p.setup = function () {
-    canvasSize = p.windowHeight - 10
-    const canvas = p.createCanvas(canvasSize, canvasSize)
+	//See annotations in JS for more information
+	const setup = (p: p5, canvasParentRef: Element) => {
+		canvasSize = p.windowHeight - 68 - 16 - 16 - 16
+    p.createCanvas(canvasSize, canvasSize).parent(canvasParentRef)
 
     /*
      * The perceptron has 3 inputs -- x, y, and bias
      * Second value is "Learning Constant"
      */
-    perceptron = new Perceptron(3, 0.0001, p) // Learning Constant is low just b/c it's fun to watch, this is not necessarily optimal
+    perceptron = new PerceptronModule(3, 0.0001, p) // Learning Constant is low just b/c it's fun to watch, this is not necessarily optimal
 
     // Create a random set of training points and calculate the "known" answer
     for (let i = 0; i < training.length; i++) {
@@ -44,10 +50,10 @@ new p5((p: p5) => {
         output: answer,
       }
     }
-  }
+	};
 
-  p.draw = function () {
-    p.fill(120, 100, 100)
+	const draw = (p: p5) => {
+		p.fill(120, 100, 100)
     p.triangle(0, canvasSize, canvasSize, 0, canvasSize, canvasSize)
 
     p.fill(100, 120, 100)
@@ -102,5 +108,12 @@ new p5((p: p5) => {
       const y = p.map(training[i].input[1], yMin, yMax, p.height, 0)
       p.ellipse(x, y, 4, 4)
     }
-  }
-}, document.getElementById('app')!)
+	};
+  return (
+    <Container className='container'>
+      <Paper className='readme' elevation={3}>
+      <Sketch className='perceptron' setup={setup as any} draw={draw as any} />
+    </Paper>
+    </Container>
+  )
+}

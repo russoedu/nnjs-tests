@@ -1,6 +1,6 @@
 import p5 from 'p5'
 
-export class Perceptron {
+export class PerceptronModule {
   public weights: number[]
   public learningRate: number
 

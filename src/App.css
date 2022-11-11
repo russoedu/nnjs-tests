@@ -1,0 +1,12 @@
+:root {
+  --border-radius: 10px;
+}
+body {
+  padding-right: 0!important;
+  overflow: auto!important;
+}
+
+a {
+  color: #feb236;
+  text-decoration: none;
+}
