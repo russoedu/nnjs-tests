@@ -21,22 +21,29 @@
   "launch": {
     "configurations": [
       {
-        "command": "npm start",
         "name": "Start",
+        "type": "node-terminal",
         "request": "launch",
-        "type": "node-terminal"
+        "command": "npm start",
       },
       {
-        "command": "npm run build",
+        "name": "Launch Edge",
+        "type": "msedge",
+        "request": "launch",
+        "url": "http://localhost:4000",
+        "webRoot": "${workspaceFolder}/src"
+      },
+      {
         "name": "Build",
+        "type": "node-terminal",
         "request": "launch",
-        "type": "node-terminal"
+        "command": "npm run build",
       },
       {
-        "command": "npm run serve",
         "name": "Serve build",
+        "type": "node-terminal",
         "request": "launch",
-        "type": "node-terminal"
+        "command": "npm run serve",
       }
     ]
   }

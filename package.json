@@ -2,14 +2,13 @@
   "name": "nnjs-tests",
   "version": "0.0.0",
   "description": "Neural Network tests",
-  "type": "module",
   "author": {
     "name": "Eduardo Russo",
     "url": "https://github.com/russoedu",
     "email": "---------@gmail.com"
   },
   "scripts": {
-    "start": "vite",
+    "start": "vite --port 4000",
     "build": "tsc && vite build",
     "serve": "vite preview"
   },

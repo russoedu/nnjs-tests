@@ -1,7 +1,7 @@
 import { createTheme, ThemeProvider } from '@mui/material'
 import CssBaseline from '@mui/material/CssBaseline'
 import fontColorContrast from 'font-color-contrast'
-import ReactDOM from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import { App } from './App'
 import './main.css'
 
@@ -23,13 +23,15 @@ const theme = createTheme({
   },
 })
 
-const page = (
-  <ThemeProvider theme={theme}>
-    <CssBaseline>
-      <App />
-    </CssBaseline>
-  </ThemeProvider>
-)
+const container = document.getElementById('app')
+if (container) {
+  const root = createRoot(container)
 
-ReactDOM.render(page, document.getElementById('root')
-);
+  root.render(
+    <ThemeProvider theme={theme}>
+      <CssBaseline>
+        <App />
+      </CssBaseline>
+    </ThemeProvider>
+  )
+}

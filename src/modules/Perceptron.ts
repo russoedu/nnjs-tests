@@ -1,15 +1,16 @@
-import p5 from 'p5'
+import { log, LogType } from './Logger'
+import { random } from './Number'
 
 export class PerceptronModule {
   public weights: number[]
   public learningRate: number
 
-  constructor (arrayEntries: number, learningRate: number, p: p5) {
+  constructor (arrayEntries: number, learningRate: number) {
     // Array of weights for inputs
     this.weights = new Array(arrayEntries)
     // Start with random weights
     for (let i = 0; i < this.weights.length; i++) {
-      this.weights[i] = p.random(-1, 1)
+      this.weights[i] = random(-1, 1)
     }
     this.learningRate = learningRate // learning rate/constant
   }
@@ -21,7 +22,6 @@ export class PerceptronModule {
   train (inputs: [number, number], desired: number) {
     // Guess the result
     const guess = this.feedforward(inputs)
-    console.log(guess === desired ? '✔️' : '❌', inputs)
 
     /*
      * Compute the factor for changing the weight based on the error
@@ -30,6 +30,7 @@ export class PerceptronModule {
      * Multiply by learning constant
      */
     const error = desired - guess
+    log(inputs, guess, desired, error, LogType.GUESS_AND_ERROR)
     // Adjust weights based on weightChange * input
     for (let i = 0; i < this.weights.length; i++) {
       this.weights[i] += this.learningRate * error * inputs[i]

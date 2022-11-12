@@ -1,11 +1,8 @@
 import { Container, Paper } from '@mui/material'
 import p5 from 'p5'
-import { useState } from 'react'
 import Sketch from 'react-p5'
 import { PerceptronModule } from '../modules/Perceptron'
 import './Perceptron.css'
-
-
 
 export function Perceptron () {
   const training = new Array(1000)
@@ -28,16 +25,16 @@ export function Perceptron () {
     return y
   }
 
-	//See annotations in JS for more information
-	const setup = (p: p5, canvasParentRef: Element) => {
-		canvasSize = p.windowHeight - 68 - 16 - 16 - 16 - 20
+  // See annotations in JS for more information
+  const setup = (p: p5, canvasParentRef: Element) => {
+    canvasSize = Math.min(p.windowHeight - 68 - 16 - 16 - 16 - 20, p.windowWidth - 16 - 16)
     p.createCanvas(canvasSize, canvasSize).parent(canvasParentRef)
 
     /*
      * The perceptron has 3 inputs -- x, y, and bias
      * Second value is "Learning Constant"
      */
-    perceptron = new PerceptronModule(3, 0.0001, p) // Learning Constant is low just b/c it's fun to watch, this is not necessarily optimal
+    perceptron = new PerceptronModule(3, 0.0001) // Learning Constant is low just b/c it's fun to watch, this is not necessarily optimal
 
     // Create a random set of training points and calculate the "known" answer
     for (let i = 0; i < training.length; i++) {
@@ -50,10 +47,10 @@ export function Perceptron () {
         output: answer,
       }
     }
-	};
+  }
 
-	const draw = (p: p5) => {
-		p.fill(120, 100, 100)
+  const draw = (p: p5) => {
+    p.fill(120, 100, 100)
     p.triangle(0, canvasSize, canvasSize, 0, canvasSize, canvasSize)
 
     p.fill(100, 120, 100)
@@ -108,7 +105,7 @@ export function Perceptron () {
       const y = p.map(training[i].input[1], yMin, yMax, p.height, 0)
       p.ellipse(x, y, 4, 4)
     }
-	};
+  }
   return (
     <Container className='container'>
       <Paper elevation={3}>
