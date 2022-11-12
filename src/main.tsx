@@ -8,15 +8,11 @@ import './main.css'
 const theme = createTheme({
   palette: {
     getContrastText: fontColorContrast,
-    mode: 'dark',
-    background: {
-      default: '#424242',
-    },
     primary: {
-      main: '#6b5b95',
+      main: '#F5612A',
     },
     secondary: {
-      main: '#feb236',
+      main: '#3850F2',
     },
     error: {
       main: '#d64161',

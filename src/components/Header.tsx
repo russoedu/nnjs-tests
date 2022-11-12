@@ -49,14 +49,9 @@ export function Header () {
           <Box sx={{ flexGrow: 0, display: 'flex' }}>
             <ButtonGroup variant="contained" sx={{ marginLeft: '1em' }}>
               <ViewOnButton
-                url='https://github.com/russoedu/font-color-contrast'
+                url='https://github.com/russoedu/nnjs-tests'
                 text='view on GitHub'
                 icon={<GoMarkGithub />}
-              />
-              <ViewOnButton
-                url='https://www.npmjs.com/package/font-color-contrast'
-                text='view on NPM'
-                icon={<FaNpm />}
               />
             </ButtonGroup>
           </Box>

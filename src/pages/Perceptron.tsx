@@ -30,7 +30,7 @@ export function Perceptron () {
 
 	//See annotations in JS for more information
 	const setup = (p: p5, canvasParentRef: Element) => {
-		canvasSize = p.windowHeight - 68 - 16 - 16 - 16
+		canvasSize = p.windowHeight - 68 - 16 - 16 - 16 - 20
     p.createCanvas(canvasSize, canvasSize).parent(canvasParentRef)
 
     /*
@@ -111,7 +111,7 @@ export function Perceptron () {
 	};
   return (
     <Container className='container'>
-      <Paper className='readme' elevation={3}>
+      <Paper elevation={3}>
       <Sketch className='perceptron' setup={setup as any} draw={draw as any} />
     </Paper>
     </Container>

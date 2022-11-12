@@ -2,6 +2,14 @@ a > img {
   padding-right: 10px;
 }
 
+.container {
+  margin: 1em 0;
+}
+
+.readme {
+  padding: 0.1em 4% 4% 4%;
+}
+
 .formula {
   filter: invert(100%) saturate(100%) brightness(100%) contrast(100%);
   max-width: 100%;

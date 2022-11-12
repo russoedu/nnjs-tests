@@ -1,6 +1,8 @@
 import { Container, Paper } from '@mui/material'
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import './Home.css'
+import { Perceptron } from './Perceptron'
 
 
 
@@ -14,7 +16,14 @@ export function Home () {
     <Container className='container'>
       <Paper className='readme' elevation={3}>
         <h1>Neural Network JavaScript Tests</h1>
-
+        <p>A playground with some neural network tests.</p>
+        <h2>Tests</h2>
+        <ol>
+          <li><Link to='perceptron'>
+            Divider Perceptron - divides a plane in two and classify the points
+          </Link>
+          </li>
+        </ol>
       </Paper>
     </Container>
   )
