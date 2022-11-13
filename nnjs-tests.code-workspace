@@ -18,7 +18,34 @@
     },
     "typescript.tsdk": "node_modules\\typescript\\lib"
   },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "type": "shell",
+        "command": "npm start",
+        "problemMatcher": [],
+        "label": "npm: start",
+        "detail": "vite --port 4000"
+      }
+    ]
+  },
   "launch": {
+    "compounds": [
+      {
+        "name": "Start and Launch",
+        "configurations": [
+          "Start", "Launch Edge"
+        ],
+        "stopAll": true
+      },
+      {
+        "name": "Build and Serve production",
+        "configurations": [
+          "Build", "Serve build"
+        ]
+      }
+    ],
     "configurations": [
       {
         "name": "Start",
@@ -45,6 +72,6 @@
         "request": "launch",
         "command": "npm run serve",
       }
-    ]
+    ],
   }
 }

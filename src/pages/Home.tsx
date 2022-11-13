@@ -4,14 +4,12 @@ import { Link } from 'react-router-dom'
 import './Home.css'
 import { Perceptron } from './Perceptron'
 
-
-
 export function Home () {
-  const [exampleTab, setExampleTab] = useState('js');
+  const [exampleTab, setExampleTab] = useState('js')
 
   const handleExampleTabChange = (event: any, newValue: any) => {
-    setExampleTab(newValue);
-  };
+    setExampleTab(newValue)
+  }
   return (
     <Container className='container'>
       <Paper className='readme' elevation={3}>
@@ -19,10 +17,7 @@ export function Home () {
         <p>A playground with some neural network tests.</p>
         <h2>Tests</h2>
         <ol>
-          <li><Link to='perceptron'>
-            Divider Perceptron - divides a plane in two and classify the points
-          </Link>
-          </li>
+          <li><Link to='perceptron'>Divider Perceptron - divides a plane in two and classify the points</Link></li>
         </ol>
       </Paper>
     </Container>

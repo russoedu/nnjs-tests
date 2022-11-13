@@ -1,12 +1,12 @@
-import { useState } from 'react'
-import { HashRouter, Routes, Route } from 'react-router-dom'
-import { Header } from './components/Header'
-import { Perceptron } from './pages/Perceptron'
-import { Home } from './pages/Home'
 import CssBaseline from '@mui/material/CssBaseline'
+import { HashRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
+import { Header } from './components/Header'
+import { Home } from './pages/Home'
+import { MultilayerPerceptron } from './pages/MultilayerPerceptron'
+import { Perceptron } from './pages/Perceptron'
 
-export function App() {
+export function App () {
   return (
     <HashRouter>
       <CssBaseline>
@@ -19,6 +19,10 @@ export function App() {
           <Route
             path='/perceptron'
             element={<Perceptron/>}
+          />
+          <Route
+            path='/multilayer-perceptron'
+            element={<MultilayerPerceptron/>}
           />
         </Routes>
       </CssBaseline>

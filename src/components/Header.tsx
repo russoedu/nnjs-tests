@@ -12,17 +12,15 @@ const pages = [
 ]
 
 export function Header () {
-
-  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
+  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null)
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
+    setAnchorElNav(event.currentTarget)
   }
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null)
   }
-
 
   return (
     <AppBar position='sticky' enableColorOnDark>
@@ -71,12 +69,12 @@ export function Header () {
               id="menu-appbar"
               anchorEl={anchorElNav}
               anchorOrigin={{
-                vertical: 'bottom',
+                vertical:   'bottom',
                 horizontal: 'right',
               }}
               keepMounted
               transformOrigin={{
-                vertical: 'top',
+                vertical:   'top',
                 horizontal: 'right',
               }}
               open={Boolean(anchorElNav)}

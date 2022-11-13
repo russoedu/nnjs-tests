@@ -26,8 +26,8 @@ export function Perceptron () {
   }
 
   // See annotations in JS for more information
-  const setup = (p: p5, canvasParentRef: Element) => {
-    canvasSize = Math.min(p.windowHeight - 68 - 16 - 16 - 16 - 20, p.windowWidth - 16 - 16)
+  function setup (p: p5, canvasParentRef: Element) {
+    canvasSize = Math.min(p.windowHeight - 68 - 16 - 20, p.windowWidth - 16 - 16)
     p.createCanvas(canvasSize, canvasSize).parent(canvasParentRef)
 
     /*
@@ -49,7 +49,7 @@ export function Perceptron () {
     }
   }
 
-  const draw = (p: p5) => {
+  function draw (p: p5) {
     p.fill(120, 100, 100)
     p.triangle(0, canvasSize, canvasSize, 0, canvasSize, canvasSize)
 
@@ -107,8 +107,8 @@ export function Perceptron () {
     }
   }
   return (
-    <Container className='container'>
-      <Paper elevation={3}>
+    <Container className='perceptron-container'>
+      <Paper className='perceptron-paper' elevation={3}>
       <Sketch className='perceptron' setup={setup as any} draw={draw as any} />
     </Paper>
     </Container>
