@@ -1,5 +1,5 @@
 import { log, LogType } from './Logger'
-import { random } from './Math'
+import { random } from './random'
 
 export class PerceptronModule {
   public weights: number[]

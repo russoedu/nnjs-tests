@@ -8,7 +8,7 @@
     "files.exclude": {
       ".editorconfig": true,
       ".eslintignore": true,
-      ".eslintrc.js": true,
+      // ".eslintrc.js": true,
       ".gitignore": true,
       "node_modules": true,
       "package-lock.json": true,
@@ -71,7 +71,13 @@
         "type": "node-terminal",
         "request": "launch",
         "command": "npm run serve",
-      }
+      },
+      {
+        "name": "Test",
+        "type": "node-terminal",
+        "request": "launch",
+        "command": "npm test",
+      },
     ],
   }
 }

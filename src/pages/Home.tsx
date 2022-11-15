@@ -2,7 +2,6 @@ import { Container, Paper } from '@mui/material'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import './Home.css'
-import { Perceptron } from './Perceptron'
 
 export function Home () {
   const [exampleTab, setExampleTab] = useState('js')
@@ -18,6 +17,7 @@ export function Home () {
         <h2>Tests</h2>
         <ol>
           <li><Link to='perceptron'>Divider Perceptron - divides a plane in two and classify the points</Link></li>
+          <li><Link to='multilayer-perceptron'>Divider Perceptron - divides a plane in two and classify the points</Link></li>
         </ol>
       </Paper>
     </Container>
