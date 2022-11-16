@@ -6,7 +6,15 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  padding-right: 0!important;
+  overflow: auto!important;
 }
+
+a {
+  color: #feb236;
+  text-decoration: none;
+}
+
 
 @font-face {
   font-family: 'Madi';

@@ -2,13 +2,18 @@ import { createTheme, ThemeProvider } from '@mui/material'
 import CssBaseline from '@mui/material/CssBaseline'
 import fontColorContrast from 'font-color-contrast'
 import { createRoot } from 'react-dom/client'
-import { App } from './App'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { Header } from './components/Header'
+import { Divider } from './pages/Divider'
+import { Home } from './pages/Home'
+import { MultilayerPerceptron } from './pages/MultilayerPerceptron'
+
 import './main.css'
 
 const theme = createTheme({
   palette: {
     getContrastText: fontColorContrast,
-    primary: {
+    primary:         {
       main: '#F5612A',
     },
     secondary: {
@@ -30,7 +35,23 @@ if (container) {
   root.render(
     <ThemeProvider theme={theme}>
       <CssBaseline>
-        <App />
+        <BrowserRouter>
+          <Header></Header>
+          <Routes>
+            <Route
+              path='/'
+              element={<Home/>}
+            />
+            <Route
+              path='/divider'
+              element={<Divider/>}
+            />
+            <Route
+              path='/multilayer-perceptron'
+              element={<MultilayerPerceptron/>}
+            />
+          </Routes>
+        </BrowserRouter>
       </CssBaseline>
     </ThemeProvider>
   )

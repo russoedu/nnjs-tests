@@ -16,7 +16,7 @@ export function Home () {
         <p>A playground with some neural network tests.</p>
         <h2>Tests</h2>
         <ol>
-          <li><Link to='perceptron'>Divider Perceptron - divides a plane in two and classify the points</Link></li>
+          <li><Link to='divider'>Divider - divides a plane in two and classify the points</Link></li>
           <li><Link to='multilayer-perceptron'>Divider Perceptron - divides a plane in two and classify the points</Link></li>
         </ol>
       </Paper>

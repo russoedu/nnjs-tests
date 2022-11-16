@@ -2,9 +2,9 @@ import { Container, Paper } from '@mui/material'
 import p5 from 'p5'
 import Sketch from 'react-p5'
 import { PerceptronModule } from '../modules/Perceptron'
-import './Perceptron.css'
+import './Divider.css'
 
-export function Perceptron () {
+export function Divider () {
   const training = new Array(1000)
   // A Perceptron object
   let perceptron: PerceptronModule
@@ -107,9 +107,9 @@ export function Perceptron () {
     }
   }
   return (
-    <Container className='perceptron-container'>
-      <Paper className='perceptron-paper' elevation={3}>
-      <Sketch className='perceptron' setup={setup as any} draw={draw as any} />
+    <Container className='divider-container'>
+      <Paper className='divider-paper' elevation={3}>
+      <Sketch className='divider' setup={setup as any} draw={draw as any} />
     </Paper>
     </Container>
   )

@@ -61,6 +61,13 @@ export class NeuralNetwork {
     this.activationFunction = func
   }
 
+  private getOutputs (inputMatrix: Matrix) {
+    return Matrix
+      .multiply(this.weightsIH, inputMatrix)
+      .add(this.biasH)
+      .map(this.activationFunction.func)
+  }
+
   predict (input: number[]) {
     // Generating the Hidden Outputs
     const inputs = Matrix.fromArray(input)

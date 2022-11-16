@@ -1,9 +1,7 @@
 import { Container, Paper } from '@mui/material'
 import p5 from 'p5'
 import Sketch from 'react-p5'
-import { Matrix } from '../modules/Matrix'
 import { NeuralNetwork } from '../modules/NeuralNetwork'
-import './Perceptron.css'
 
 export function MultilayerPerceptron () {
   const nn = NeuralNetwork.deserialize({
