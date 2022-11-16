@@ -2,24 +2,78 @@ import { Container, Paper } from '@mui/material'
 import p5 from 'p5'
 import Sketch from 'react-p5'
 import { Matrix } from '../modules/Matrix'
+import { NeuralNetwork } from '../modules/NeuralNetwork'
 import './Perceptron.css'
 
 export function MultilayerPerceptron () {
-  const m1 = new Matrix(2, 3)
-  const m2 = new Matrix(2, 3)
-  m1.randomize()
-  m2.randomize()
-  m1.print()
-  m2.print()
-  m1.add(2)
-  m2.multiply(2)
-  m1.print()
-  m2.print()
-  m1.multiply(m2)
-  m1.print()
+  const nn = NeuralNetwork.deserialize({
+    inputNodes:  2,
+    hiddenNodes: 2,
+    outputNodes: 2,
+    weightsIH:   {
+      rows: 2,
+      cols: 2,
+      data: [
+        [
+          -0.8302655275234734,
+          1.3709560680332107,
+        ],
+        [
+          0.6390669270701912,
+          0.2150643404509951,
+        ],
+      ],
+    },
+    weightsHO: {
+      rows: 2,
+      cols: 2,
+      data: [
+        [
+          0.6539900470290729,
+          0.9249435572126452,
+        ],
+        [
+          1.0092518954707632,
+          -0.6133956241558756,
+        ],
+      ],
+    },
+    biasH: {
+      rows: 2,
+      cols: 1,
+      data: [
+        [
+          1.9893889863516376,
+        ],
+        [
+          -0.2977108153988719,
+        ],
+      ],
+    },
+    biasO: {
+      rows: 2,
+      cols: 1,
+      data: [
+        [
+          0.35721768691944544,
+        ],
+        [
+          -0.518299801524555,
+        ],
+      ],
+    },
+    learningRate:       0.1,
+    activationFunction: {
+    },
+  })
+  const input = [1, 0]
+  const target = [1, 0]
 
-  const x = JSON.parse(JSON.stringify(m1.data))
-  console.log(x[0] === m1.data[0])
+  console.table(nn.predict(input))
+  for (let i = 0; i < 100000; i++) {
+    nn.train(input, target)
+  }
+  console.table(nn.predict(input))
 
   let canvasSize: number
   function setup (p: p5, canvasParentRef: Element) {

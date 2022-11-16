@@ -1,3 +1,5 @@
+import { random } from './random'
+
 export class Matrix {
   rows: number
   cols: number
@@ -39,7 +41,7 @@ export class Matrix {
   }
 
   randomize () {
-    return this.map(e => Math.random() * 2 - 1)
+    return this.map(() => random(-1, 1))
   }
 
   add (n: number|Matrix) {

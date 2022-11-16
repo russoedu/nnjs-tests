@@ -1,3 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="0" failures="0" errors="0" time="6.831">
+<testsuites name="jest tests" tests="25" failures="0" errors="0" time="15.877">
+  <testsuite name="src\modules\Matrix.test.ts" errors="0" failures="0" skipped="0" timestamp="2022-11-15T07:08:21" time="15.552" tests="25">
+    <testcase classname="Matrix add scalar to matrix" name="Matrix add scalar to matrix" time="0.006">
+    </testcase>
+    <testcase classname="Matrix add matrix to other matrix" name="Matrix add matrix to other matrix" time="0.001">
+    </testcase>
+    <testcase classname="Matrix subtract matrix from other matrix" name="Matrix subtract matrix from other matrix" time="0.002">
+    </testcase>
+    <testcase classname="Matrix matrix product" name="Matrix matrix product" time="4.099">
+    </testcase>
+    <testcase classname="Matrix hadamard product" name="Matrix hadamard product" time="4.208">
+    </testcase>
+    <testcase classname="Matrix scalar product" name="Matrix scalar product" time="0.002">
+    </testcase>
+    <testcase classname="Matrix transpose matrix - (1, 1)" name="Matrix transpose matrix - (1, 1)" time="0.002">
+    </testcase>
+    <testcase classname="Matrix transpose matrix - (2, 3) to (3, 2)" name="Matrix transpose matrix - (2, 3) to (3, 2)" time="0.001">
+    </testcase>
+    <testcase classname="Matrix transpose matrix - (3, 2) to (2, 3)" name="Matrix transpose matrix - (3, 2) to (2, 3)" time="0.003">
+    </testcase>
+    <testcase classname="Matrix transpose matrix - (1, 5) to (5, 1)" name="Matrix transpose matrix - (1, 5) to (5, 1)" time="0.002">
+    </testcase>
+    <testcase classname="Matrix transpose matrix - (5, 1) to (1, 5)" name="Matrix transpose matrix - (5, 1) to (1, 5)" time="0.001">
+    </testcase>
+    <testcase classname="Matrix mapping with static map" name="Matrix mapping with static map" time="0.002">
+    </testcase>
+    <testcase classname="Matrix mapping with instance map" name="Matrix mapping with instance map" time="0.001">
+    </testcase>
+    <testcase classname="Matrix error handling of addition when columns and rows of A don&apos;t match columns and rows of B." name="Matrix error handling of addition when columns and rows of A don&apos;t match columns and rows of B." time="0.002">
+    </testcase>
+    <testcase classname="Matrix error handling of static subtraction when columns and rows of A don&apos;t match columns and rows of B." name="Matrix error handling of static subtraction when columns and rows of A don&apos;t match columns and rows of B." time="0.002">
+    </testcase>
+    <testcase classname="Matrix error handling of hadamard product when columns and rows of A don&apos;t match columns and rows of B." name="Matrix error handling of hadamard product when columns and rows of A don&apos;t match columns and rows of B." time="0.003">
+    </testcase>
+    <testcase classname="Matrix error handling of matrix product when columns of A don&apos;t match rows of B." name="Matrix error handling of matrix product when columns of A don&apos;t match rows of B." time="0.002">
+    </testcase>
+    <testcase classname="Matrix printing" name="Matrix printing" time="0.002">
+    </testcase>
+    <testcase classname="Matrix matrix from array" name="Matrix matrix from array" time="0.002">
+    </testcase>
+    <testcase classname="Matrix matrix to array" name="Matrix matrix to array" time="0.001">
+    </testcase>
+    <testcase classname="Matrix chanining matrix methods" name="Matrix chanining matrix methods" time="0.002">
+    </testcase>
+    <testcase classname="Matrix instance map with row and column params" name="Matrix instance map with row and column params" time="0.001">
+    </testcase>
+    <testcase classname="Matrix static map with row and column params" name="Matrix static map with row and column params" time="0.001">
+    </testcase>
+    <testcase classname="Matrix matrix (de)serialization" name="Matrix matrix (de)serialization" time="0.002">
+    </testcase>
+    <testcase classname="Matrix matrix copy" name="Matrix matrix copy" time="0.003">
+    </testcase>
+  </testsuite>
 </testsuites>
