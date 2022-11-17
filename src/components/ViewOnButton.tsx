@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Button } from '@mui/material'
 import './ViewOnButton.css'
 
 export function ViewOnButton ({ url, text, icon }: {

@@ -3,12 +3,11 @@ import CssBaseline from '@mui/material/CssBaseline'
 import fontColorContrast from 'font-color-contrast'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import './App.css'
 import { Header } from './components/Header'
 import { Divider } from './pages/Divider'
 import { Home } from './pages/Home'
-import { MultilayerPerceptron } from './pages/MultilayerPerceptron'
-
-import './main.css'
+import { XOR } from './pages/XOR'
 
 const theme = createTheme({
   palette: {
@@ -47,8 +46,8 @@ if (container) {
               element={<Divider/>}
             />
             <Route
-              path='/multilayer-perceptron'
-              element={<MultilayerPerceptron/>}
+              path='/xor'
+              element={<XOR/>}
             />
           </Routes>
         </BrowserRouter>

@@ -5,9 +5,11 @@ import { PerceptronModule } from '../modules/Perceptron'
 import './Divider.css'
 
 export function Divider () {
-  const training = new Array(1000)
+  const training = new Array(5000)
   // A Perceptron object
   let perceptron: PerceptronModule
+  // Learning Constant is low just b/c it's fun to watch, this is not necessarily optimal
+  const learningRate = 0.001
 
   // We will train the perceptron with one "Point" object at a time
   let count = 0
@@ -34,7 +36,7 @@ export function Divider () {
      * The perceptron has 3 inputs -- x, y, and bias
      * Second value is "Learning Constant"
      */
-    perceptron = new PerceptronModule(3, 0.0001) // Learning Constant is low just b/c it's fun to watch, this is not necessarily optimal
+    perceptron = new PerceptronModule(3, learningRate)
 
     // Create a random set of training points and calculate the "known" answer
     for (let i = 0; i < training.length; i++) {
@@ -109,8 +111,8 @@ export function Divider () {
   return (
     <Container className='divider-container'>
       <Paper className='divider-paper' elevation={3}>
-      <Sketch className='divider' setup={setup as any} draw={draw as any} />
-    </Paper>
+        <Sketch className='divider' setup={setup as any} draw={draw as any} />
+      </Paper>
     </Container>
   )
 }

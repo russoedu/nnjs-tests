@@ -2,52 +2,62 @@ module.exports = {
   root:   true,
   parser: '@typescript-eslint/parser',
   env:    {
-    es2022: true,
-    node:   true,
-    jest:   true,
+    node:    true,
+    browser: true,
+    jest:    true,
+    es2022:  true,
   },
   extends: [
-    'plugin:@typescript-eslint/recommended', // Out of the box Typescript rules
-    'standard', // Out of the box StandardJS rules
+    'plugin:@typescript-eslint/recommended',
+    'eslint:recommended',
+    'plugin:react/recommended',
+    'plugin:react/jsx-runtime',
   ],
-  plugins: [
-    '@typescript-eslint', // Let's us override rules below.
-  ],
+  settings: {
+    react: {
+      version: 'detect',
+    },
+  },
   parserOptions: {
-    ecmaVersion: 2021,
+    ecmaFeatures: {
+      jsx: true,
+    },
+    ecmaVersion: 'latest',
     sourceType:  'module',
   },
+  plugins: [
+    'react',
+    '@typescript-eslint',
+  ],
+  globals: {
+    React:   true,
+    JSX:     true,
+    process: true,
+  },
   rules: {
-    // P5 specific rules
-    'no-new':                                   0,
-    'new-cap':                                  0,
-    '@typescript-eslint/no-non-null-assertion': 0,
-
-    'no-undef':                  0,
-    'no-redeclare':              'off',
-    'no-throw-literal':          0,
-    '@typescript-eslint/indent': 'off', // This is the job of StandardJS
-    'no-unused-expressions':     'off',
-    'no-var':                    2,
-    'prefer-const':              2,
-    'no-extra-boolean-cast':     'off',
-    'object-curly-spacing':      [
-      2,
-      'always',
-    ],
-    'no-useless-escape': 'off',
-    semi:                [
-      'error',
-      'never',
-    ],
-    'comma-dangle': [
+    'react/no-unescaped-entities': 'off',
+    'no-extra-semi':               'error',
+    'quote-props':                 ['error', 'as-needed'],
+    'space-before-function-paren': ['error', 'always'],
+    indent:                        ['error', 2],
+    'react/react-in-jsx-scope':    'off',
+    'no-throw-literal':            0,
+    'no-unused-expressions':       'off',
+    'no-var':                      2,
+    'prefer-const':                2,
+    'no-extra-boolean-cast':       'off',
+    'array-bracket-spacing':       ['error', 'never'],
+    'object-curly-spacing':        ['error', 'always'],
+    'no-useless-escape':           'off',
+    semi:                          ['error','never'],
+    'comma-dangle':                [
       'error',
       {
         arrays:    'always-multiline',
         objects:   'always-multiline',
         imports:   'always-multiline',
         exports:   'always-multiline',
-        functions: 'only-multiline',
+        functions: 'never',
       },
     ],
     'key-spacing': [
@@ -56,11 +66,15 @@ module.exports = {
         align: 'value',
       },
     ],
-    'no-dupe-class-members':                             'off',
-    'no-unused-vars':                                    'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-explicit-any':                'off',
-    '@typescript-eslint/no-unused-vars':                 0,
-    'multiline-comment-style':                           ['error', 'starred-block'],
+    '@typescript-eslint/no-unused-vars':                 [
+      'error',
+      {
+        varsIgnorePattern: '^env$|^_.+?',
+      },
+    ],
+    'multiline-comment-style': ['error', 'starred-block'],
+    quotes:                    ['error', 'single'],
   },
 }
