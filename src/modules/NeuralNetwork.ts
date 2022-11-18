@@ -145,6 +145,18 @@ export class NeuralNetwork {
     this.weightsIH.add(weighsIHDeltas)
     // Adjust the bias by its deltas (which is just the gradients)
     this.biasH.add(hiddenGradient)
+
+    // Generating the Training's Outputs
+    const output = Matrix
+      .multiply(this.weightsHO, hidden)
+      .add(this.biasO)
+      .map(this.activationFunction.func)
+
+    // Sending back to the caller
+    return output
+      .toArray()
+
+
   }
 
   serialize () {

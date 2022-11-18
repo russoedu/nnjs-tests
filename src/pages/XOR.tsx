@@ -2,39 +2,10 @@ import { Container, Paper } from '@mui/material'
 import p5 from 'p5'
 import Sketch from 'react-p5'
 import { NeuralNetwork } from '../modules/NeuralNetwork'
-import { random } from '../modules/random'
+import trainingData from './XOR-training.json'
 
 export function XOR () {
-  const nn = new NeuralNetwork(2, 3, 1)
-  const trainingData = [
-    {
-      i: [0, 1],
-      t: [1],
-    },
-    {
-      i: [1, 0],
-      t: [1],
-    },
-    {
-      i: [1, 1],
-      t: [0],
-    },
-    {
-      i: [0, 0],
-      t: [0],
-    },
-  ]
-
-  for (let i = 0; i < 100000; i++) {
-    const selector = Math.floor(random(0, 3))
-    const d = trainingData[selector]
-    nn.train(d.i, d.t)
-  }
-
-  console.log(nn.predict([0, 1])[0])
-  console.log(nn.predict([1, 0])[0])
-  console.log(nn.predict([0, 0])[0])
-  console.log(nn.predict([1, 1])[0])
+  const nn = new NeuralNetwork(2, 2, 1, 0.01)
 
   let canvasSize: number
   function setup (p: p5, canvasParentRef: Element) {
@@ -43,13 +14,35 @@ export function XOR () {
   }
 
   function draw (p: p5) {
-    p.fill(120, 100, 100)
+    p.background(0)
+
+    for (let i = 0; i < 10000; i++) {
+      const data = p.random(trainingData)
+      nn.train(data.inputs, data.targets)
+    }
+
+    const resolution = Math.round(p.width / 50)
+    const cols = p.width / resolution
+    const rows = p.height / resolution
+    for (let i = 0; i < cols; i++) {
+      for (let j = 0; j < rows; j++) {
+        const x1 = i / cols
+        const x2 = j / rows
+        const inputs = [x1, x2]
+
+        const y = nn.predict(inputs)[0]
+        p.noStroke()
+
+        p.fill(y * 255)
+        p.rect(i * resolution, j * resolution, resolution, resolution)
+      }
+    }
   }
 
   return (
-    <Container className='container'>
-      <Paper elevation={3}>
-        <Sketch className='multilayer-perceptron' setup={setup as any} draw={draw as any} />
+    <Container className='canvas-container'>
+      <Paper className='canvas-paper' elevation={3}>
+        <Sketch className='canvas' setup={setup as any} draw={draw as any} />
       </Paper>
     </Container>
   )

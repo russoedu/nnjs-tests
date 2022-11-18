@@ -5,6 +5,7 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
 import { Header } from './components/Header'
+import { Contrast } from './pages/Contrast'
 import { Divider } from './pages/Divider'
 import { Home } from './pages/Home'
 import { XOR } from './pages/XOR'
@@ -37,18 +38,10 @@ if (container) {
         <BrowserRouter>
           <Header></Header>
           <Routes>
-            <Route
-              path='/'
-              element={<Home/>}
-            />
-            <Route
-              path='/divider'
-              element={<Divider/>}
-            />
-            <Route
-              path='/xor'
-              element={<XOR/>}
-            />
+            <Route path='/' element={<Home/>}/>
+            <Route path='/divider' element={<Divider/>}/>
+            <Route path='/xor' element={<XOR/>}/>
+            <Route path='/contrast' element={<Contrast/>}/>
           </Routes>
         </BrowserRouter>
       </CssBaseline>

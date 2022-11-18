@@ -12,6 +12,7 @@ export function Home () {
         <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
           <ListItem title='Divider' link='divider' description='divides a plane in two and classify the points using a single Perceptron' />
           <ListItem title='XOR' link='xor' description='XOR visualisation using the created Neural Network' />
+          <ListItem title='Contrast' link='contrast' description='Color contrast with Neural Network.' alert='⚠️ Contains fast flashing images that may cause discomfort and trigger seizures for people with photosensitive epilepsy' />
         </List>
       </Paper>
     </Container>

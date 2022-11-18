@@ -1,5 +1,5 @@
 import { log, LogType } from './Logger'
-import { random } from './random'
+import random from 'random'
 
 export class PerceptronModule {
   public weights: number[]
@@ -10,7 +10,7 @@ export class PerceptronModule {
     this.weights = new Array(arrayEntries)
     // Start with random weights
     for (let i = 0; i < this.weights.length; i++) {
-      this.weights[i] = random(-1, 1)
+      this.weights[i] = random.float(-1, 1)
     }
     this.learningRate = learningRate // learning rate/constant
   }

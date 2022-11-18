@@ -109,9 +109,9 @@ export function Divider () {
     }
   }
   return (
-    <Container className='divider-container'>
-      <Paper className='divider-paper' elevation={3}>
-        <Sketch className='divider' setup={setup as any} draw={draw as any} />
+    <Container className='canvas-container'>
+      <Paper className='canvas-paper' elevation={3}>
+        <Sketch className='canvas' setup={setup as any} draw={draw as any} />
       </Paper>
     </Container>
   )

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 import './ListItem.css'
 
-export function ListItem ({ title, description, link }: {title: string, description: string, link: string }) {
+export function ListItem ({ title, description, alert, link }: {title: string, description: string, alert?: string, link: string }) {
   return <LI sx={{ width: '100%' }}>
     <Link to={link} className='list-item'><ListItemButton>
       <ListItemText
@@ -23,6 +23,25 @@ export function ListItem ({ title, description, link }: {title: string, descript
           </Fragment>
         }
       />
+      {alert ?
+        <ListItemText
+          sx={{ width: '80%' }}
+          primary={
+            <Fragment>
+              <Typography
+                sx={{ display: 'inline', width: '100%' }}
+                component="span"
+                variant="subtitle1"
+                color="text.primary"
+                fontWeight='bold'
+              >
+                {alert}
+              </Typography>
+            </Fragment>
+          }
+
+        />
+        :<></>}
     </ListItemButton>
     </Link>
   </LI>
