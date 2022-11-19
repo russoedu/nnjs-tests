@@ -6,26 +6,26 @@ import { NeuralNetwork } from '../modules/NeuralNetwork'
 import fontColorContrast from 'font-color-contrast'
 
 enum Colour {
-  BLACK = 'black',
-  WHITE = 'white',
+  BLACK = 0,
+  WHITE = 255,
 }
-enum Train {
-  NONE,
-  TRAINING_START,
-  TRAINING,
-  JUST_TRAINED,
-  TRAINED,
+enum Status {
+  START,
+  TRAIN,
+  VIEW,
 }
 export function Contrast () {
   let canvasSize: number
   let colour = [0, 0, 0]
+  let status = Status.START
+
   let brain: NeuralNetwork
-  let contrast = Colour.WHITE
-  let prediction = Colour.WHITE
-  let trained = Train.NONE
   let trainIteration = 0
 
-  function pickColour () {
+  let fontColorContrastColour = Colour.WHITE
+  let predictionColour = Colour.WHITE
+
+  function setNewColour () {
     colour = [
       random.int(255),
       random.int(255),
@@ -34,132 +34,84 @@ export function Contrast () {
   }
 
   function mouseClicked (p: p5) {
-    if (trained >= Train.JUST_TRAINED) {
+    switch (status) {
+    case Status.START:
+      status = Status.TRAIN
+      break
+    case Status.TRAIN:
       p.noLoop()
-      pickColour()
+      status = Status.VIEW
+      break
+    case Status.VIEW:
+      setNewColour()
       p.redraw()
-    } else if (trained === Train.NONE) {
-      trained = Train.TRAINING_START
-    } else {
-      trained = Train.JUST_TRAINED
-      p.noLoop()
+      break
     }
   }
 
-  function mouseDragged (p: p5) {
-    trained = Train.NONE
+  function restartTraining (p: p5) {
+    status = Status.START
     p.loop()
   }
 
-  function colourContrast () {
-    const contrast = fontColorContrast(colour) === '#000000' ? Colour.BLACK : Colour.WHITE
-    console.log('colour', colour)
-    console.log('fontColorContrast', contrast === Colour.BLACK ? [1, 0] : [0, 1])
+  function setColours () {
+    const normalisedColour = colour.map(c => c / 255)
+    const contrastHex = fontColorContrast(colour)
+    fontColorContrastColour = contrastHex === '#000000' ? Colour.BLACK : Colour.WHITE
 
-    return contrast
-  }
+    let prediction = [0, 0]
+    if (status === Status.TRAIN) {
+      setNewColour()
+      const trainContrast = fontColorContrastColour === Colour.BLACK ? [1, 0] : [0, 1]
+      prediction = brain.train(normalisedColour, trainContrast)
+    } else {
+      prediction = brain.predict(normalisedColour)
+    }
+    console.log('prediction', prediction)
 
-  function getPredictionColour (prediction: number[]) {
-    return prediction[0] > prediction[1] ? Colour.BLACK : Colour.WHITE
-  }
-
-  function colourPrediction () {
-    const brainResponse = brain.predict(colour.map(c => c / 255))
-    console.log('prediction', brainResponse)
-
-    return getPredictionColour(brainResponse)
+    predictionColour = prediction[0] > prediction[1] ? Colour.BLACK : Colour.WHITE
   }
 
   function setup (p: p5, canvasParentRef: Element) {
-
     canvasSize = Math.min(p.windowHeight - 68 - 16 - 20, p.windowWidth - 16 - 16)
-    p.createCanvas(canvasSize, canvasSize).parent(canvasParentRef)
+    p.createCanvas(canvasSize, canvasSize / 2).parent(canvasParentRef)
 
     brain = new NeuralNetwork(3, 3, 2)
 
-    trained = Train.NONE
+    status = Status.START
+    p.loop()
   }
 
   function draw (p: p5) {
-    if (trained < Train.JUST_TRAINED) {
-      if (trained === Train.TRAINING_START) {
-        console.log('Training')
-        trained = Train.TRAINING
-      }
+    setColours()
 
-      pickColour()
+    p.background(colour[0], colour[1], colour[2])
+    p.textSize(64)
+    p.textAlign(p.CENTER, p.CENTER)
 
-      const trainContrast = fontColorContrast(colour) === '#000000' ? [1, 0] : [0, 1]
-      const trainResponse = brain.train(colour.map(c => c / 255), trainContrast)
-      prediction = getPredictionColour(trainResponse)
+    p.fill(0)
+    p.text('black', canvasSize / 3, p.height / 4)
 
-      p.background(colour[0], colour[1], colour[2])
-      p.textSize(64)
-      p.textAlign(p.CENTER, p.CENTER)
+    p.fill(255)
+    p.text('white', 2 * canvasSize / 3, p.height / 4)
 
-      p.fill(0)
-      p.text('black', canvasSize / 3, canvasSize / 4)
+    p.fill(predictionColour)
+    p.text('prediction', canvasSize / 2, 3 * p.height / 4)
 
-      p.fill(255)
-      p.text('white', 2 * canvasSize / 3, canvasSize / 4)
+    p.fill(fontColorContrastColour)
+    p.text('fontColorContrast', canvasSize / 2, 2 * p.height / 4)
 
-      contrast = colourContrast()
-      if (contrast === Colour.BLACK) {
-        p.fill(0)
-      } else {
-        p.fill(255)
-      }
-      p.text('fontColorContrast', canvasSize / 2, 2 * canvasSize / 4)
+    p.fill(0)
+    p.textAlign(p.RIGHT, p.CENTER)
+    p.textFont('monospace', 20)
+    const rectSize = p.textWidth(String(trainIteration)) + 20
+    p.rect(p.width - rectSize, 0, rectSize, 30)
 
-      prediction = colourPrediction()
-      if (prediction === Colour.BLACK) {
-        p.fill(0)
-      } else {
-        p.fill(255)
-      }
-      p.text('prediction', canvasSize / 2, 3 * canvasSize / 4)
+    p.fill(255)
+    p.text(trainIteration, p.width - 10, 17)
 
+    if (status === Status.TRAIN) {
       trainIteration++
-      if (trainIteration > 100000) {
-        trained = Train.JUST_TRAINED
-        p.noLoop()
-      } else {
-        if (contrast === Colour.BLACK) {
-          p.fill(0)
-        } else {
-          p.fill(255)
-        }
-        p.textAlign(p.RIGHT, p.TOP)
-        p.textSize(25)
-        p.text(trainIteration, canvasSize - 10, 10)
-      }
-    } else {
-
-      p.background(colour[0], colour[1], colour[2])
-      p.textSize(64)
-      p.textAlign(p.CENTER, p.CENTER)
-
-      p.fill(0)
-      p.text('black', canvasSize / 3, canvasSize / 4)
-
-      p.fill(255)
-      p.text('white', 2 * canvasSize / 3, canvasSize / 4)
-
-      contrast = colourContrast()
-      if (contrast === Colour.BLACK) {
-        p.fill(0)
-      } else {
-        p.fill(255)
-      }
-      p.text('fontColorContrast', canvasSize / 2, 2 * canvasSize / 4)
-
-      prediction = colourPrediction()
-      if (prediction === Colour.BLACK) {
-        p.fill(0)
-      } else {
-        p.fill(255)
-      }
-      p.text('prediction', canvasSize / 2, 3 * canvasSize / 4)
     }
   }
 
@@ -168,7 +120,7 @@ export function Contrast () {
   return (
     <Container className='canvas-container'>
       <Paper className='canvas-paper' elevation={3}>
-        <Sketch className='canvas' setup={setup as any} draw={draw as any} mouseClicked={mouseClicked as any} mouseDragged={mouseDragged as any}/>
+        <Sketch className='canvas' setup={setup as any} draw={draw as any} mouseClicked={mouseClicked as any} mouseDragged={restartTraining as any}/>
       </Paper>
     </Container>
   )
