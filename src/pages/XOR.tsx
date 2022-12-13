@@ -2,7 +2,7 @@ import { Container, Paper } from '@mui/material'
 import p5 from 'p5'
 import Sketch from 'react-p5'
 import { NeuralNetwork } from '../modules/NeuralNetwork'
-import trainingData from './XOR-training.json'
+import trainingData from '../data/XOR-training.json'
 
 export function XOR () {
   const nn = new NeuralNetwork(2, 2, 1, 0.01)

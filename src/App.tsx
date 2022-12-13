@@ -5,8 +5,10 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
 import { Header } from './components/Header'
-import { Contrast } from './pages/Contrast'
+import { ColourContrast } from './pages/ColourContrast'
 import { Divider } from './pages/Divider'
+import { DoodleClassifier } from './pages/DoodleClassifier'
+import { DoodleVisualiser } from './pages/DoodleVisualiser'
 import { Home } from './pages/Home'
 import { XOR } from './pages/XOR'
 
@@ -41,7 +43,9 @@ if (container) {
             <Route path='/' element={<Home/>}/>
             <Route path='/divider' element={<Divider/>}/>
             <Route path='/xor' element={<XOR/>}/>
-            <Route path='/contrast' element={<Contrast/>}/>
+            <Route path='/contrast' element={<ColourContrast/>}/>
+            <Route path='/doodle-view' element={<DoodleVisualiser/>}/>
+            <Route path='/doodle-classifier' element={<DoodleClassifier/>}/>
           </Routes>
         </BrowserRouter>
       </CssBaseline>

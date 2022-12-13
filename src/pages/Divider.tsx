@@ -2,7 +2,6 @@ import { Container, Paper } from '@mui/material'
 import p5 from 'p5'
 import Sketch from 'react-p5'
 import { PerceptronModule } from '../modules/Perceptron'
-import './Divider.css'
 
 export function Divider () {
   const training = new Array(5000)
@@ -71,7 +70,7 @@ export function Divider () {
      * Draw the line based on the current weights
      * Formula is weights[0]*x + weights[1]*y + weights[2] = 0
      */
-    p.stroke(255, 0, 0)
+    p.stroke(255, 255, 255)
     p.strokeWeight(1)
     x1 = xMin
     y1 = (-perceptron.weights[2] - perceptron.weights[0] * x1) / perceptron.weights[1]

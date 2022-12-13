@@ -25,6 +25,9 @@ export function ViewOnButton ({ url, text, icon }: {
         color='secondary'
         variant='contained'
         sx={{ display: { md: 'flex', lg: 'none' }, paddingRight: '10px' }}
+        href={url}
+        target='_blank'
+        rel='noreferrer'
       >
         <span className='vob-get-links-icon'>
           {icon}
