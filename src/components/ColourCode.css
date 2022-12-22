@@ -1,0 +1,26 @@
+.cc-red {
+  color: red;
+}
+
+.cc-green {
+  color: green;
+}
+
+.cc-blue {
+  color: blue;
+}
+
+.cc-code {
+  font-family: monospace;
+  background-color: #1e1a28;
+  border-radius: 6px;
+  background: white;
+  display: inline;
+  color: black;
+  padding: 0.4em;
+  margin: 0;
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 85%;
+  line-height: 1.45;
+}

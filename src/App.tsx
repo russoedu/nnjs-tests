@@ -5,6 +5,7 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
 import { Header } from './components/Header'
+import { ColourClassifier } from './pages/ColourClassifier'
 import { ColourContrast } from './pages/ColourContrast'
 import { Divider } from './pages/Divider'
 import { DoodleClassifier } from './pages/DoodleClassifier'
@@ -46,6 +47,7 @@ if (container) {
             <Route path='/contrast' element={<ColourContrast/>}/>
             <Route path='/doodle-view' element={<DoodleVisualiser/>}/>
             <Route path='/doodle-classifier' element={<DoodleClassifier/>}/>
+            <Route path='/colour-classifier' element={<ColourClassifier/>}/>
           </Routes>
         </BrowserRouter>
       </CssBaseline>

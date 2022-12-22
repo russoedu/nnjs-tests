@@ -15,6 +15,7 @@ export function Home () {
           <ListItem title='Contrast' link='contrast' description='Color contrast with Neural Network.' alert='⚠️ Contains fast flashing images that may cause discomfort and trigger seizures for people with photosensitive epilepsy' />
           <ListItem title='Doodle visualiser' link='doodle-view' description='View the doodles database used to train the doodle classifier.'/>
           <ListItem title='Doodle classifier' link='doodle-classifier' description='Classify the doodles database.'/>
+          <ListItem title='Colour classifier' link='colour-classifier' description='Colour classification with TensorFlow.'/>
         </List>
       </Paper>
     </Container>

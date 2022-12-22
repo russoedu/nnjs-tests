@@ -36,6 +36,7 @@ module.exports = {
   },
   rules: {
     'no-redeclare':                    'off',
+    'no-unused-vars':                  'off',
     '@typescript-eslint/no-redeclare': 'warn',
     'react/no-unescaped-entities':     'off',
     'no-extra-semi':                   'error',
@@ -74,6 +75,7 @@ module.exports = {
       'error',
       {
         varsIgnorePattern: '^env$|^_.+?',
+        argsIgnorePattern: '^_.+?',
       },
     ],
     'multiline-comment-style': ['error', 'starred-block'],

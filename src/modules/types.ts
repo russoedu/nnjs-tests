@@ -32,3 +32,45 @@ export type CategoryData = {
   training: CategoryEntry[]
   testing: CategoryEntry[]
 }
+
+export const colourLabels = [
+  'red-ish',
+  'green-ish',
+  'blue-ish',
+  'orange-ish',
+  'yellow-ish',
+  'pink-ish',
+  'purple-ish',
+  'brown-ish',
+  'grey-ish',
+]
+
+export type ColourDataEntry = {
+  'r': number,
+  'b': number,
+  'g': number,
+  'label': typeof colourLabels[number],
+  'uid': string
+}
+
+export type ColourDataT = { [key: number]: ColourDataEntry }
+
+export type Colour = [number, number, number]
+export type Label = number
+
+export type Loss = {
+  loss: number,
+  val_loss: number,
+}
+
+export const modalStyle = {
+  position:  'absolute',
+  top:       '50%',
+  left:      '50%',
+  transform: 'translate(-50%, -50%)',
+  width:     400,
+  bgcolor:   'background.paper',
+  border:    '2px solid #000',
+  boxShadow: 24,
+  p:         4,
+}
