@@ -1,11 +1,11 @@
-import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Card, CardContent, Container, Grid, LinearProgress, Modal, Paper, Typography } from '@mui/material'
+import { Accordion, AccordionDetails, AccordionSummary, Box, Card, CardContent, Container, Grid, LinearProgress, Modal, Paper, Typography } from '@mui/material'
 import * as tf from '@tensorflow/tfjs'
 import fontColorContrast from 'font-color-contrast'
 import { useEffect, useState } from 'react'
 import { ColourCode } from '../components/ColourCode'
 import { Slider } from '../components/Slider'
 import { colourData } from '../modules/ColourData'
-import { colourLabels, Loss, modalStyle } from '../modules/types'
+import { colourLabels, Loss, modalStyle, TrainingStatus } from '../modules/types'
 import './ColourClassifier.css'
 
 export function ColourClassifier () {
@@ -13,81 +13,56 @@ export function ColourClassifier () {
   const TRAINING_EPOCHS = 10
   const [model, setModel] = useState({} as tf.Sequential)
 
-  const [isTraining, setIsTraining] = useState(false)
+  const [trainingStatus, setTrainingStatus] = useState(TrainingStatus.LOADING_DATA)
   const [colour, setColour] = useState('#ff0000')
   const [r, setR] = useState(255)
   const [g, setG] = useState(0)
   const [b, setB] = useState(0)
-  const [label, setLabel] = useState('')
+  const [label, setLabel] = useState('red-ish')
   const [fontColour, setFontColour] = useState('#ffffff')
   const [progress, setProgress] = useState(0)
   const [loss, setLoss] = useState(0)
 
   useEffect(() => {
-    colourData.loadData()
-    getModel()
+    colourData
+      .loadData()
+      .then(() => {
+        setTfModel()
+      })
   }, [])
 
   useEffect(() => {
-    if (model instanceof tf.Sequential) {
-      const c = toHex(r) + toHex(g) + toHex(b)
-
-      setColour(c)
-      setFontColour(fontColorContrast(c))
-      predict()
+    if (trainingStatus === TrainingStatus.MODEL_SET) {
+      train()
     }
+    /*
+     *  else if (trainingStatus === TrainingStatus.LOADING_DATA) {
+     *   setTrainingStatus(TrainingStatus.MODEL_SET)
+     * }
+     */
+  }, [model])
+
+
+  useEffect(() => {
+    const c = toHexColour(r, g, b)
+
+    setColour(c)
+    setFontColour(fontColorContrast(c))
+    predict()
   }, [r, g, b])
 
-  /**
-   * Creates the TensorFlow Model and retrieves
-   * @returns The TensorFlow Model
-   */
-  function getModel () {
-    if (!(model instanceof tf.Sequential)) {
-      console.log('model')
-
-      const md = tf.sequential()
-      const hidden = tf.layers.dense({
-        units:      15,
-        inputShape: [3],
-        activation: 'sigmoid',
-      })
-
-      const output = tf.layers.dense({
-        units:      9,
-        activation: 'softmax',
-      })
-      md.add(hidden)
-      md.add(output)
-
-      const optimizer = tf.train.sgd(LEARNING_RATE)
-
-      md.compile({
-        optimizer: optimizer,
-        loss:      'categoricalCrossentropy',
-        metrics:   ['accuracy'],
-      })
-
-      setModel(md)
-    }
-  }
-
   async function train () {
-    setIsTraining(true)
+    setTrainingStatus(TrainingStatus.TRAINING)
     setProgress(0)
-    // colourData.shuffle()
+    colourData.shuffle()
 
-
-
-    colourData.xs.print()
-    colourData.ys.print()
     const fitOptions = {
       epochs:          TRAINING_EPOCHS,
       validationSplit: 0.1,
       shuffle:         true,
       callbacks:       {
         onTrainEnd: () => {
-          setIsTraining(false)
+          setTrainingStatus(TrainingStatus.TRAINED)
         },
         onEpochEnd: (epoch: number, logs: Loss) => {
           const completionPercentage = (epoch + 1) / (TRAINING_EPOCHS / 100)
@@ -113,17 +88,43 @@ export function ColourClassifier () {
     return model.fit(colourData.xs, colourData.ys, fitOptions as any)
   }
 
-  function predict () {
-    if (model instanceof tf.Sequential) {
-      setFontColour(fontColorContrast(colour))
+  function setTfModel () {
+    if (trainingStatus === TrainingStatus.LOADING_DATA) {
+      console.log('model')
 
+      const md = tf.sequential()
+      const hidden = tf.layers.dense({
+        units:      15,
+        inputShape: [3],
+        activation: 'sigmoid',
+      })
+
+      const output = tf.layers.dense({
+        units:      9,
+        activation: 'softmax',
+      })
+      md.add(hidden)
+      md.add(output)
+
+      const optimizer = tf.train.sgd(LEARNING_RATE)
+
+      md.compile({
+        optimizer: optimizer,
+        loss:      'categoricalCrossentropy',
+        metrics:   ['accuracy'],
+      })
+
+      setModel(md)
+      setTrainingStatus(TrainingStatus.MODEL_SET)
+    }
+  }
+
+  function predict () {
+    if (trainingStatus === TrainingStatus.TRAINED) {
       tf.tidy(() => {
         const input = tf.tensor2d([[r / 255, g / 255, b / 255]])
 
         const results: tf.Tensor = model.predict(input) as any
-        input.print()
-        results.print()
-
         const argMax = results.argMax(1)
         const index = argMax.dataSync()[0]
 
@@ -163,6 +164,12 @@ export function ColourClassifier () {
     return '0'.repeat(2 - txt.length) + txt
   }
 
+  function toHexColour (red: number, green: number, blue: number) {
+    const c = '#' + toHex(red) + toHex(green) + toHex(blue)
+
+    return c
+  }
+
   return <Container className='canvas-container'>
     <Paper className='canvas-paper' elevation={3}>
       <Container className='cp-container'>
@@ -198,7 +205,7 @@ export function ColourClassifier () {
               />
               <Card
                 className='color-picker-details' style={{
-                  backgroundColor: `#${colour}`,
+                  backgroundColor: colour,
                   color:           fontColour,
                 }}
               >
@@ -227,12 +234,6 @@ export function ColourClassifier () {
                 <div id='loss'>Prediction: {label}</div>
                 <div id='graph'></div>
               </div>
-              <Button id='train' onClick={train} className='btn'>Start Training</Button>
-              <div className='load-Save'>
-                <p><b>Note:</b> When saving a model, the topology and weights will be saved to your browsers <code>indexedDB</code> storage</p>
-                <button id='load' className='btn'>Load Model</button>
-                <button id='save' className='btn'>Save Model</button>
-              </div>
             </Paper>
           </Grid>
           <Grid xs={12} item>
@@ -242,7 +243,7 @@ export function ColourClassifier () {
       </Container>
     </Paper>
     <Modal
-      open={isTraining}
+      open={trainingStatus !== TrainingStatus.TRAINED}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >

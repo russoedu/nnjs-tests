@@ -45,6 +45,18 @@ export const colourLabels = [
   'grey-ish',
 ]
 
+export const colourLabelsColour = [
+  '#ff0000',
+  '#00ff00',
+  '#0000ff',
+  '#ff7500',
+  '#ffff00',
+  '#ff0075',
+  '#7500ff',
+  '#753000',
+  '#e5e5e5',
+]
+
 export type ColourDataEntry = {
   'r': number,
   'b': number,
@@ -73,4 +85,11 @@ export const modalStyle = {
   border:    '2px solid #000',
   boxShadow: 24,
   p:         4,
+}
+
+export enum TrainingStatus {
+  LOADING_DATA,
+  MODEL_SET,
+  TRAINING,
+  TRAINED,
 }
