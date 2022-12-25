@@ -5,12 +5,12 @@ import { useEffect, useState } from 'react'
 import { ColourCode } from '../components/ColourCode'
 import { Slider } from '../components/Slider'
 import { colourData } from '../modules/ColourData'
-import { colourLabels, Loss, modalStyle, TrainingStatus } from '../modules/types'
+import { colourLabels, colourLabelsColour, Loss, modalStyle, TrainingStatus } from '../modules/types'
 import './ColourClassifier.css'
 
 export function ColourClassifier () {
   const LEARNING_RATE = 0.25
-  const TRAINING_EPOCHS = 10
+  const TRAINING_EPOCHS = 30
   const [model, setModel] = useState({} as tf.Sequential)
 
   const [trainingStatus, setTrainingStatus] = useState(TrainingStatus.LOADING_DATA)
@@ -18,10 +18,12 @@ export function ColourClassifier () {
   const [r, setR] = useState(255)
   const [g, setG] = useState(0)
   const [b, setB] = useState(0)
-  const [label, setLabel] = useState('red-ish')
   const [fontColour, setFontColour] = useState('#ffffff')
   const [progress, setProgress] = useState(0)
   const [loss, setLoss] = useState(0)
+  const [accuracy, setAccuracy] = useState(0)
+  const [label, setLabel] = useState('red-ish')
+  const [labelColour, setLabelColour] = useState('#ff0000')
 
   useEffect(() => {
     colourData
@@ -66,23 +68,12 @@ export function ColourClassifier () {
         },
         onEpochEnd: (epoch: number, logs: Loss) => {
           const completionPercentage = (epoch + 1) / (TRAINING_EPOCHS / 100)
+          console.log(logs)
 
           setProgress(completionPercentage)
           setLoss(Number(logs.loss.toFixed(5)))
-          // colourData.shuffle()
-          /*
-           * lossY.push(logs.val_loss.toFixed(2))
-           * accY.push(logs.loss.toFixed(2))
-           * lossX.push(lossX.length + 1)
-           */
-          // return tf.nextFrame()
+          setAccuracy(Number(logs.acc.toFixed(5)))
         },
-
-        /*
-         * onBatchEnd: async (batch, logs) => {
-         *   await tf.nextFrame()
-         * },
-         */
       },
     }
     return model.fit(colourData.xs, colourData.ys, fitOptions as any)
@@ -129,6 +120,7 @@ export function ColourClassifier () {
         const index = argMax.dataSync()[0]
 
         setLabel(colourLabels[index])
+        setLabelColour(colourLabelsColour[index])
       })
     }
   }
@@ -226,13 +218,20 @@ export function ColourClassifier () {
           </Grid>
           <Grid xs={8} item>
             <Paper
-              className='cp-demo-bg cp-container-item'
+              className='canvas-paper'
               elevation={3}
             >
               <div id='graph-Container'>
                 <div id='loss'>Loss: {loss}</div>
-                <div id='loss'>Prediction: {label}</div>
-                <div id='graph'></div>
+                <div id='loss'>Accuracy: {accuracy}</div>
+                <Card
+                  className='color-picker-details' style={{
+                    backgroundColor: labelColour,
+                    color:           fontColorContrast(labelColour),
+                  }}
+                >
+                  <div id='loss'>Prediction: {label}</div>
+                </Card>
               </div>
             </Paper>
           </Grid>

@@ -73,6 +73,8 @@ export type Label = number
 export type Loss = {
   loss: number,
   val_loss: number,
+  acc: number,
+  val_acc: number,
 }
 
 export const modalStyle = {

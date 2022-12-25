@@ -14,9 +14,9 @@ export class NeuralNetwork {
 
   /**
    * Clones a Neural Network
-   * @param inputNodes The Neural Network to be cloned
+   * @param original The Neural Network to be cloned
    */
-  constructor (inputNodes: NeuralNetwork)
+  constructor (original: NeuralNetwork)
   /**
    * Creates a new Neural Network and randomize the weights and biases
    * @param inputNodes The count of nodes in the input of the Neural Network
@@ -178,5 +178,12 @@ export class NeuralNetwork {
 
   copy () {
     return new NeuralNetwork(this)
+  }
+
+  mutate (func: (val: number, i: number, j: number) => number) {
+    this.weightsIH.map(func)
+    this.weightsHO.map(func)
+    this.biasH.map(func)
+    this.biasO.map(func)
   }
 }

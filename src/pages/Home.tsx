@@ -16,6 +16,7 @@ export function Home () {
           <ListItem title='Doodle visualiser' link='doodle-view' description='View the doodles database used to train the doodle classifier.'/>
           <ListItem title='Doodle classifier' link='doodle-classifier' description='Classify the doodles database.'/>
           <ListItem title='Colour classifier' link='colour-classifier' description='Colour classification with TensorFlow.'/>
+          <ListItem title='Flappy Bird' link='flappy-bird' description='Flappy Bird clone.'/>
         </List>
       </Paper>
     </Container>

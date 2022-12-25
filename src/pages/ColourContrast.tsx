@@ -1,7 +1,6 @@
 import random from 'random'
-import p5 from 'p5'
+import { ReactP5Wrapper, P5CanvasInstance } from 'react-p5-wrapper'
 import { Container, Paper } from '@mui/material'
-import Sketch from 'react-p5'
 import { NeuralNetwork } from '../modules/NeuralNetwork'
 import fontColorContrast from 'font-color-contrast'
 
@@ -43,26 +42,7 @@ export function ColourContrast () {
     return colour / 255
   }
 
-  function mouseClicked (p: p5) {
-    switch (status) {
-    case Status.START:
-      status = Status.TRAIN
-      break
-    case Status.TRAIN:
-      p.noLoop()
-      status = Status.VIEW
-      break
-    case Status.VIEW:
-      setNewColour()
-      p.redraw()
-      break
-    }
-  }
 
-  function restartTraining (p: p5) {
-    status = Status.START
-    p.loop()
-  }
 
   function setColours () {
     const normalisedColour = [
@@ -93,67 +73,91 @@ export function ColourContrast () {
 
     predictionColour = prediction[0] > prediction[1] ? Colour.BLACK : Colour.WHITE
   }
+  function sketch (p: P5CanvasInstance) {
+    p.setup = () => {
+      canvasSize = Math.min(p.windowHeight - 68 - 16 - 20, p.windowWidth - 16 - 16)
+      p.createCanvas(canvasSize, canvasSize)
 
-  function setup (p: p5, canvasParentRef: Element) {
-    canvasSize = Math.min(p.windowHeight - 68 - 16 - 20, p.windowWidth - 16 - 16)
-    p.createCanvas(canvasSize, canvasSize).parent(canvasParentRef)
+      brain = new NeuralNetwork(3, 3, 2)
 
-    brain = new NeuralNetwork(3, 3, 2)
+      status = Status.START
+      p.loop()
+    }
 
-    status = Status.START
-    p.loop()
-  }
-
-  function draw (p: p5) {
-    setColours()
-    const textHeight = meaning.length * meaningFontSize * p.textDescent() / p.width
+    p.draw = () => {
+      setColours()
+      const textHeight = meaning.length * meaningFontSize * p.textDescent() / p.width
 
 
-    p.background(r, g, b)
-    p.textSize(10)
-    p.textAlign(p.LEFT, p.TOP)
+      p.background(r, g, b)
+      p.textSize(10)
+      p.textAlign(p.LEFT, p.TOP)
 
-    p.fill(0)
-    p.text(meaning, 20, 20, p.width - 20)
+      p.fill(0)
+      p.text(meaning, 20, 20, p.width - 20)
 
-    p.fill(255)
-    p.text(meaning, 20, textHeight + 20, p.width - 20)
+      p.fill(255)
+      p.text(meaning, 20, textHeight + 20, p.width - 20)
 
-    p.textAlign(p.CENTER, p.CENTER)
-    p.textSize(64)
+      p.textAlign(p.CENTER, p.CENTER)
+      p.textSize(64)
 
-    p.fill(predictionColour)
-    p.text('prediction', canvasSize / 2, 3 * p.height / 4)
+      p.fill(predictionColour)
+      p.text('prediction', canvasSize / 2, 3 * p.height / 4)
 
-    p.fill(fontColorContrastColour)
-    p.text('fontColorContrast', canvasSize / 2, 2 * p.height / 4)
+      p.fill(fontColorContrastColour)
+      p.text('fontColorContrast', canvasSize / 2, 2 * p.height / 4)
 
-    p.textAlign(p.RIGHT, p.CENTER)
-    p.textFont('monospace', 20)
+      p.textAlign(p.RIGHT, p.CENTER)
+      p.textFont('monospace', 20)
 
-    const trainRectSize = p.textWidth(`Iteration: ${trainIteration}`) + 20
-    p.fill(0)
-    p.rect(p.width - trainRectSize, 0, trainRectSize, 30)
-    p.fill(255)
-    p.text(`Iteration: ${trainIteration}`, p.width - 10, 17)
+      const trainRectSize = p.textWidth(`Iteration: ${trainIteration}`) + 20
+      p.fill(0)
+      p.rect(p.width - trainRectSize, 0, trainRectSize, 30)
+      p.fill(255)
+      p.text(`Iteration: ${trainIteration}`, p.width - 10, 17)
 
-    const errorRectSize = p.textWidth(`Error: ${trainError}`) + 20
-    p.fill(0)
-    p.rect(p.width - errorRectSize, p.height - 30, errorRectSize, 30)
-    p.fill(255)
-    p.text(`Error: ${trainError}`, p.width - 10, p.height - 13)
+      const errorRectSize = p.textWidth(`Error: ${trainError}`) + 20
+      p.fill(0)
+      p.rect(p.width - errorRectSize, p.height - 30, errorRectSize, 30)
+      p.fill(255)
+      p.text(`Error: ${trainError}`, p.width - 10, p.height - 13)
 
-    if (status === Status.TRAIN) {
-      trainIteration++
+      if (status === Status.TRAIN) {
+        trainIteration++
+      }
+    }
+
+    p.mouseClicked = () => {
+      switch (status) {
+      case Status.START:
+        status = Status.TRAIN
+        break
+      case Status.TRAIN:
+        p.noLoop()
+        status = Status.VIEW
+        break
+      case Status.VIEW:
+        setNewColour()
+        p.redraw()
+        break
+      }
+    }
+
+    p.mouseDragged = () => {
+      status = Status.START
+      p.loop()
     }
   }
+
+
 
 
 
   return (
     <Container className='canvas-container'>
       <Paper className='canvas-paper' elevation={3}>
-        <Sketch className='canvas' setup={setup as any} draw={draw as any} mouseClicked={mouseClicked as any} mouseDragged={restartTraining as any}/>
+        <ReactP5Wrapper className='canvas' sketch={sketch}/>
       </Paper>
     </Container>
   )
