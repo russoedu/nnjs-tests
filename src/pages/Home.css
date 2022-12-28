@@ -10,3 +10,6 @@ a > img {
   padding: 0.1em 4% 4% 4%;
 }
 
+.main-item:hover {
+  background-color: #F5612A;
+}

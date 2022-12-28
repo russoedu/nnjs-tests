@@ -7,13 +7,14 @@ import { Pipe } from '../modules/Pipe'
 
 export function FlappyBird () {
   const PARALLAX = 0.1
+  const PIPES_SPEED = 3 // 4 or less or not possible with this gravity
+  const PIPES_GAP = 180
 
   let bird: Bird
   let pipes: Pipe[]
   let score = 0
   let maxScore = 0
   let bgX = 0
-  let gameOverFrame = 0
   let isOver = false
 
   let touched = false
@@ -21,14 +22,17 @@ export function FlappyBird () {
 
   let pipeBodySprite: p5.Image
   let pipePeakSprite: p5.Image
-  let birdSprite: p5.Image
+  let birdSprites: p5.Image[]
   let bgImg: p5.Image
 
   function sketch (p: P5CanvasInstance) {
     p.preload = () => {
-      pipeBodySprite = p.loadImage('flappy-bird/pipe_marshmallow_fix.png')
-      pipePeakSprite = p.loadImage('flappy-bird/pipe_marshmallow_fix.png')
-      birdSprite = p.loadImage('flappy-bird/rocket.png')
+      pipeBodySprite = p.loadImage('flappy-bird/pipe.svg')
+      pipePeakSprite = p.loadImage('flappy-bird/pipe.svg')
+      birdSprites = [
+        p.loadImage('flappy-bird/rocket-frame-0.svg'),
+        p.loadImage('flappy-bird/rocket-frame-1.svg'),
+      ]
       bgImg = p.loadImage('flappy-bird/background.png')
     }
     p.setup = () => {
@@ -38,7 +42,7 @@ export function FlappyBird () {
 
     p.keyPressed = () => {
       if (p.key === ' ') {
-        bird.up()
+        bird.flyUp()
         if (isOver) reset() //you can just call reset() in Machinelearning if you die, because you cant simulate keyPress with code.
       }
     }
@@ -87,9 +91,11 @@ export function FlappyBird () {
       bird.update()
       bird.show()
 
-      if ((p.frameCount - gameOverFrame) % 150 == 0) {
-        pipes.push(new Pipe(pipeBodySprite,pipePeakSprite, p))
-      }
+      pipes.forEach(pipe => {
+        if (pipe.getNewPipe) {
+          pipes.push(new Pipe(p, pipeBodySprite, pipePeakSprite, PIPES_SPEED, PIPES_GAP))
+        }
+      })
 
       showScores()
 
@@ -100,13 +106,14 @@ export function FlappyBird () {
        * and set it to the touched var
        */
       touched = (p.touches.length > 0)
+      console.log(p.touches)
 
       /*
        * if user has touched then make bird jump
        * also checks if not touched before
        */
       if (touched && !prevTouched) {
-        bird.up()
+        bird.flyUp()
       }
 
       // updates prevTouched
@@ -123,6 +130,8 @@ export function FlappyBird () {
       p.textSize(64)
       p.textAlign(p.CENTER, p.CENTER)
       p.text('GAMEOVER', p.width / 2, p.height / 2)
+      p.textSize(35)
+      p.text('press SPACE to restart', p.width / 2, p.height / 2 + 42)
       p.textAlign(p.LEFT, p.BASELINE)
       maxScore = p.max(score, maxScore)
       isOver = true
@@ -133,10 +142,8 @@ export function FlappyBird () {
       isOver = false
       score = 0
       bgX = 0
-      pipes = []
-      bird = new Bird(p.height, p, birdSprite)
-      pipes.push(new Pipe(pipeBodySprite,pipePeakSprite, p))
-      gameOverFrame = p.frameCount - 1
+      pipes = [new Pipe(p, pipeBodySprite, pipePeakSprite, PIPES_SPEED, PIPES_GAP)]
+      bird = new Bird(p.height, p, birdSprites)
       p.loop()
     }
   }

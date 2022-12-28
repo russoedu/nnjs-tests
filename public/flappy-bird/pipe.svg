@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="80" height="80" viewBox="0 0 80 80" xml:space="preserve">
+<desc>Created with Fabric.js 4.6.0</desc>
+<defs>
+</defs>
+<g transform="matrix(1 0 0 1 40 40)" id="sZwz6qabMNV5SI1_sKaMw"  >
+<linearGradient id="SVGID_461" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1 0 0 1 0 0)"  x1="0" y1="39.999998520000005" x2="79.99999704000001" y2="39.999998520000005">
+<stop offset="0%" style="stop-color:#FC861D;stop-opacity: 1"/>
+<stop offset="12.353799776681033%" style="stop-color:#FF9D47;stop-opacity: 1"/>
+<stop offset="32.09064261220737%" style="stop-color:#FFAA60;stop-opacity: 1"/>
+<stop offset="54.0204679850144%" style="stop-color:#FF902E;stop-opacity: 1"/>
+<stop offset="100%" style="stop-color:#CE6100;stop-opacity: 1"/>
+</linearGradient>
+<path style="stroke: rgb(222,254,162); stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: url(#SVGID_461); fill-rule: nonzero; opacity: 1;" vector-effect="non-scaling-stroke"  transform=" translate(-40, -40)" d="M 0 0 L 80 0 L 80 80 L 0 80 z" stroke-linecap="round" />
+</g>
+</svg>

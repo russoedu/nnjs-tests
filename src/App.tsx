@@ -12,6 +12,8 @@ import { DoodleClassifier } from './pages/DoodleClassifier'
 import { DoodleVisualiser } from './pages/DoodleVisualiser'
 import { FlappyBird } from './pages/FlappyBird'
 import { Home } from './pages/Home'
+import { SmartyBird } from './pages/SmartyBird'
+import { TrainingBird } from './pages/TrainingBird'
 import { XOR } from './pages/XOR'
 
 const theme = createTheme({
@@ -50,6 +52,8 @@ if (container) {
             <Route path='/doodle-classifier' element={<DoodleClassifier/>}/>
             <Route path='/colour-classifier' element={<ColourClassifier/>}/>
             <Route path='/flappy-bird' element={<FlappyBird/>}/>
+            <Route path='/training-bird' element={<TrainingBird/>}/>
+            <Route path='/smarty-bird' element={<SmartyBird/>}/>
           </Routes>
         </BrowserRouter>
       </CssBaseline>
