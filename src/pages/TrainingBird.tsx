@@ -3,28 +3,29 @@ import p5 from 'p5'
 import { P5CanvasInstance, ReactP5Wrapper } from 'react-p5-wrapper'
 import { Bird } from '../modules/Bird'
 import { BirdBrain } from '../modules/BirdBrain'
+import { GeneticAlgorithm } from '../modules/GeneticAlgorithm'
 import { Pipe } from '../modules/Pipe'
-
+import hash from 'hash-it'
 
 export function TrainingBird () {
-  const TOTAL_BIRDS = 300
+  const TOTAL_BIRDS = 500
   const PIPES_SPEED = 4 // 4 or less or not possible with this gravity
   const PIPES_GAP = 150
+  let MUTATION_RATE = 0.5 // Decreases by MUTATION_RATE_RATE each iteration
+  const MUTATION_RATE_RATE = 0.001
 
+  let ga: GeneticAlgorithm
   let birds: Bird[] = []
   let birdBrains: BirdBrain[] = []
 
-  let lastBirdBrain: string
+  let lastBirdBrain: string|undefined
 
   let pipes: Pipe[] = []
-  let score = 0
-  let maxScore = 0
   let isOver = false
 
   let pipeBodySprite: p5.Image
   let pipePeakSprite: p5.Image
   let birdSprites: p5.Image[]
-
 
   function sketch (p: P5CanvasInstance) {
     p.preload = () => {
@@ -34,6 +35,7 @@ export function TrainingBird () {
         p.loadImage('flappy-bird/rocket-frame-0.svg'),
         p.loadImage('flappy-bird/rocket-frame-1.svg'),
       ]
+      ga = new GeneticAlgorithm(p, TOTAL_BIRDS, birdSprites)
     }
     p.setup = () => {
       p.createCanvas(800, 600)
@@ -61,16 +63,19 @@ export function TrainingBird () {
         }
       }
 
-      for (let i = 0; i < TOTAL_BIRDS; i++) {
+      for (let i = 0; i < birds.length; i++) {
         const bird = birds[i]
         if (bird) {
           const birdBrain = birdBrains[i]
 
           birdBrain.think(pipes)
 
+          if (birds.length === 1) {
+            lastBirdBrain = birdBrains[0].brain.serialize()
+          }
+
           for (let j = pipes.length - 1; j >= 0; j--) {
             if (pipes[j].hits(bird)) {
-              lastBirdBrain = birdBrains[i].brain.serialize()
               birds.splice(i, 1)
               birdBrains.splice(i, 1)
               // gameOver()
@@ -81,14 +86,11 @@ export function TrainingBird () {
           bird.show()
         }
 
-        if (birds.filter(bird => bird !== null).length === 0) {
-          console.log(lastBirdBrain)
-
-          gameOver()
-        }
       }
 
-
+      if (birds.length === 0) {
+        gameOver()
+      }
 
       pipes.forEach(pipe => {
         if (pipe.getNewPipe) {
@@ -96,13 +98,14 @@ export function TrainingBird () {
         }
       })
 
-      showScores()
+      showBirds()
     }
 
-    function showScores () {
+    function showBirds () {
       p.textSize(32)
-      p.text('score: ' + score, 1, 32)
-      p.text('record: ' + maxScore, 1, 64)
+      p.text('birds: ' + birds.length, 1, 32 * 1)
+      p.text('mutation rate: ' + MUTATION_RATE, 1, 32 * 2)
+      p.text('bird hash: ' + hash(lastBirdBrain), 1, 32 * 3)
     }
 
     function gameOver () {
@@ -110,24 +113,24 @@ export function TrainingBird () {
       p.textAlign(p.CENTER, p.CENTER)
       p.text('GAMEOVER', p.width / 2, p.height / 2)
       p.textSize(35)
-      p.text('press SPACE to restart', p.width / 2, p.height / 2 + 42)
+      p.text('press SPACE to restart or wait', p.width / 2, p.height / 2 + 42)
       p.textAlign(p.LEFT, p.BASELINE)
-      maxScore = p.max(score, maxScore)
       isOver = true
-      p.noLoop()
+
+      reset()
     }
 
     function reset () {
       isOver = false
-      score = 0
       pipes = [new Pipe(p ,pipeBodySprite,pipePeakSprite, PIPES_SPEED, PIPES_GAP)]
-      birds = []
-      birdBrains = []
-      for (let i = 0; i < TOTAL_BIRDS; i++) {
-        const bird = new Bird(p.height, p, birdSprites)
-        birds.push(bird)
-        birdBrains.push(new BirdBrain(p, bird))
-      }
+
+      ga.nextGeneration(MUTATION_RATE, lastBirdBrain)
+      MUTATION_RATE = MUTATION_RATE <= MUTATION_RATE_RATE
+        ? MUTATION_RATE_RATE
+        : MUTATION_RATE - MUTATION_RATE_RATE
+
+      birds = ga.birds
+      birdBrains = ga.birdBrains
       p.loop()
     }
   }

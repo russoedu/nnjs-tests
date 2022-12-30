@@ -14,8 +14,8 @@ export class Bird {
   frame = 1
   frameCounter = 0
 
-  constructor (height: number, p5: P5CanvasInstance, birdSprites: p5.Image[]) {
-    this.y = height / 2
+  constructor (p5: P5CanvasInstance, birdSprites: p5.Image[]) {
+    this.y = p5.height / 2
     this.x = 64
 
     this.gravity = 0.6

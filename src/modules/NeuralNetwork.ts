@@ -1,5 +1,7 @@
+import random from 'random'
 import { ActivationFunction, sigmoid } from './ActivationFunction'
 import { Matrix } from './Matrix'
+import hashIt from 'hash-it'
 
 export class NeuralNetwork {
   inputNodes: number
@@ -176,14 +178,26 @@ export class NeuralNetwork {
     return nn
   }
 
+  get hash () {
+    return hashIt(this.serialize())
+  }
+
   copy () {
     return new NeuralNetwork(this)
   }
 
-  mutate (func: (val: number, i: number, j: number) => number) {
-    this.weightsIH.map(func)
+  mutate (mutationRate: number) {
+    const func = (val: number) => {
+      const valRate = random.float(-1 * mutationRate, mutationRate)
+      const newVal = val + valRate * val
+      return newVal
+    }
+
+    this.weightsIH.map((func))
     this.weightsHO.map(func)
     this.biasH.map(func)
     this.biasO.map(func)
+
+    return this
   }
 }

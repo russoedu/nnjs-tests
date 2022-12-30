@@ -125,7 +125,7 @@ export function SmartyBird () {
       score = 0
       bgX = 0
       pipes = [new Pipe(p, pipeBodySprite, pipePeakSprite, PIPES_SPEED, PIPES_GAP)]
-      bird = new Bird(p.height, p, birdSprites)
+      bird = new Bird(p, birdSprites)
       const brain = NeuralNetwork.deserialize(smartBird)
       birdBrain = new BirdBrain(p, bird, brain)
 
