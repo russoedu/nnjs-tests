@@ -189,7 +189,10 @@ export class NeuralNetwork {
   mutate (mutationRate: number) {
     const func = (val: number) => {
       const valRate = random.float(-1 * mutationRate, mutationRate)
-      const newVal = val + valRate * val
+      const tempVal = val + valRate * val
+      const newVal = tempVal >= 0
+        ? Math.min(tempVal, 1)
+        : Math.max(tempVal, -1)
       return newVal
     }
 

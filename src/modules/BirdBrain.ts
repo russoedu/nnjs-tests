@@ -12,7 +12,7 @@ export class BirdBrain {
     this.bird = bird
     this.p5 = p5
     this.brain = typeof brain === 'undefined'
-      ? new NeuralNetwork(4, 14, 1)
+      ? new NeuralNetwork(5, 10, 1)
       : brain
   }
 
@@ -22,6 +22,7 @@ export class BirdBrain {
       pipes[0].x / this.p5.width,
       pipes[0].top / this.p5.height,
       pipes[0].bottom / this.p5.height,
+      (pipes[0].speed - 3) / 6,
     ]
 
     const output = this.brain.predict(input)

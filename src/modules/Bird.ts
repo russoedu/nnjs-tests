@@ -13,6 +13,7 @@ export class Bird {
   p5: P5CanvasInstance
   frame = 1
   frameCounter = 0
+  distance = 0
 
   constructor (p5: P5CanvasInstance, birdSprites: p5.Image[]) {
     this.y = p5.height / 2
@@ -34,6 +35,7 @@ export class Bird {
     // draw the icon CENTRED around the X and Y coords of the bird object
     this.frame = this.frameCounter < 10 ? 0 : 1
     this.p5.image(this.sprites[this.frame], this.x - this.width / 2, this.y - this.height / 2, this.width, this.height)
+    this.distance++
   }
 
   flyUp () {

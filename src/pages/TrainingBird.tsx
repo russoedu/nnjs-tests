@@ -1,22 +1,23 @@
 import { Container, Paper } from '@mui/material'
 import p5 from 'p5'
+import random from 'random'
 import { P5CanvasInstance, ReactP5Wrapper } from 'react-p5-wrapper'
 import { Bird } from '../modules/Bird'
 import { BirdBrain } from '../modules/BirdBrain'
 import { GeneticAlgorithm } from '../modules/GeneticAlgorithm'
 import { Pipe } from '../modules/Pipe'
-import hash from 'hash-it'
 
 export function TrainingBird () {
-  const TOTAL_BIRDS = 500
-  const PIPES_SPEED = 4 // 4 or less or not possible with this gravity
+  const TOTAL_BIRDS = 1000
+  let PIPES_SPEED = 5 // 4 or less or not possible with this gravity
   const PIPES_GAP = 150
-  let MUTATION_RATE = 0.5 // Decreases by MUTATION_RATE_RATE each iteration
-  const MUTATION_RATE_RATE = 0.001
+  let MUTATION_RATE = 0.5
+  const BREAK_DISTANCE = 5000
 
   let ga: GeneticAlgorithm
   let birds: Bird[] = []
   let birdBrains: BirdBrain[] = []
+  let run = 1
 
   let lastBirdBrain: string|undefined
 
@@ -70,27 +71,25 @@ export function TrainingBird () {
 
           birdBrain.think(pipes)
 
-          if (birds.length === 1) {
-            lastBirdBrain = birdBrains[0].brain.serialize()
-          }
-
           for (let j = pipes.length - 1; j >= 0; j--) {
             if (pipes[j].hits(bird)) {
               birds.splice(i, 1)
               birdBrains.splice(i, 1)
-              // gameOver()
             }
           }
 
           bird.update()
           bird.show()
         }
-
       }
 
-      if (birds.length === 0) {
+      if (birds.length <= 1 || birds[0].distance >= BREAK_DISTANCE) {
+        lastBirdBrain = birdBrains[0].brain.serialize()
+
+        MUTATION_RATE = Math.min(BREAK_DISTANCE / 100 / birds[0].distance, 0.5, MUTATION_RATE)
         gameOver()
       }
+
 
       pipes.forEach(pipe => {
         if (pipe.getNewPipe) {
@@ -102,10 +101,17 @@ export function TrainingBird () {
     }
 
     function showBirds () {
+      p.textAlign(p.RIGHT, p.BOTTOM)
+      const textX = p.width - 5
+      const bird0 = birds[0]
+      const bird0Name = ga.birdNames.name(birdBrains[0].brain.hash)
       p.textSize(32)
-      p.text('birds: ' + birds.length, 1, 32 * 1)
-      p.text('mutation rate: ' + MUTATION_RATE, 1, 32 * 2)
-      p.text('bird hash: ' + hash(lastBirdBrain), 1, 32 * 3)
+      p.text('birds: ' + birds.length, textX, p.height - 32 * 5)
+      p.text('run: ' + run, textX, p.height - 32 * 4)
+      p.text('speed: ' + PIPES_SPEED.toFixed(2), textX, p.height - 32 * 3)
+      p.text('fittest bird: ' + bird0Name, textX, p.height - 32 * 2)
+      p.text('mutation rate: ' + MUTATION_RATE.toFixed(2), textX, p.height - 32 * 1)
+      p.text('distance: ' + bird0.distance, textX, p.height - 32 * 0)
     }
 
     function gameOver () {
@@ -117,17 +123,16 @@ export function TrainingBird () {
       p.textAlign(p.LEFT, p.BASELINE)
       isOver = true
 
+      run++
       reset()
     }
 
     function reset () {
       isOver = false
+      PIPES_SPEED = Number(random.float(3, 6).toFixed(2))
       pipes = [new Pipe(p ,pipeBodySprite,pipePeakSprite, PIPES_SPEED, PIPES_GAP)]
 
       ga.nextGeneration(MUTATION_RATE, lastBirdBrain)
-      MUTATION_RATE = MUTATION_RATE <= MUTATION_RATE_RATE
-        ? MUTATION_RATE_RATE
-        : MUTATION_RATE - MUTATION_RATE_RATE
 
       birds = ga.birds
       birdBrains = ga.birdBrains

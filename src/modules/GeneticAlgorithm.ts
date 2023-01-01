@@ -3,6 +3,7 @@ import { P5CanvasInstance } from 'react-p5-wrapper'
 import { BirdBrain } from './BirdBrain'
 import p5 from 'p5'
 import { NeuralNetwork } from './NeuralNetwork'
+import { BirdNames } from '../pages/BirdNames'
 
 export class GeneticAlgorithm {
   p5: P5CanvasInstance
@@ -10,11 +11,14 @@ export class GeneticAlgorithm {
   birds: Bird[] = []
   birdSprites: p5.Image[]
   birdBrains: BirdBrain[] = []
+  birdNames: BirdNames
 
   constructor (p5: P5CanvasInstance, totalBirds: number, birdSprites: p5.Image[]) {
     this.p5 = p5
     this.totalBirds = totalBirds
     this.birdSprites = birdSprites
+    this.birdNames = new BirdNames()
+
   }
 
   nextGeneration (mutationRate: number, lastBirdBrain?: string) {
@@ -30,8 +34,10 @@ export class GeneticAlgorithm {
 
 
       const bird = new Bird(this.p5, this.birdSprites)
+      const birdBrain = new BirdBrain(this.p5, bird, brain)
       this.birds.push(bird)
-      this.birdBrains.push(new BirdBrain(this.p5, bird, brain))
+      this.birdBrains.push(birdBrain)
+      this.birdNames.add(birdBrain.brain.hash)
     }
   }
 }
