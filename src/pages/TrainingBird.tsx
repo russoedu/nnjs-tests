@@ -19,10 +19,10 @@ export function TrainingBird () {
   let birdBrains: BirdBrain[] = []
   let run = 1
 
-  let lastBirdBrain: string|undefined
-
   let pipes: Pipe[] = []
   let isOver = false
+
+  let fittest = ''
 
   let pipeBodySprite: p5.Image
   let pipePeakSprite: p5.Image
@@ -55,9 +55,9 @@ export function TrainingBird () {
 
     p.draw = () => {
       p.background(0, 80, 255)
+
       for (let i = pipes.length - 1; i >= 0; i--) {
         pipes[i].update()
-        pipes[i].show()
 
         if (pipes[i].offscreen()) {
           pipes.splice(i, 1)
@@ -73,20 +73,18 @@ export function TrainingBird () {
 
           for (let j = pipes.length - 1; j >= 0; j--) {
             if (pipes[j].hits(bird)) {
+              fittest = ga.savedBirds.fittest.name
               birds.splice(i, 1)
               birdBrains.splice(i, 1)
             }
           }
 
           bird.update()
-          bird.show()
         }
       }
 
-      if (birds.length <= 1 || birds[0].distance >= BREAK_DISTANCE) {
-        lastBirdBrain = birdBrains[0].brain.serialize()
-
-        MUTATION_RATE = Math.min(BREAK_DISTANCE / 100 / birds[0].distance, 0.5, MUTATION_RATE)
+      if (birds.length === 0 || birds[0].distance >= BREAK_DISTANCE) {
+        MUTATION_RATE = Math.min(BREAK_DISTANCE / 100 / ga.savedBirds.fittest.bird.distance, 0.5, MUTATION_RATE)
         gameOver()
       }
 
@@ -97,21 +95,27 @@ export function TrainingBird () {
         }
       })
 
-      showBirds()
+      for (const bird of birds) {
+        bird.show()
+      }
+
+      for (const pipe of pipes) {
+        pipe.show()
+      }
+
+      showData()
     }
 
-    function showBirds () {
+    function showData () {
       p.textAlign(p.RIGHT, p.BOTTOM)
       const textX = p.width - 5
-      const bird0 = birds[0]
-      const bird0Name = ga.birdNames.name(birdBrains[0].brain.hash)
       p.textSize(32)
       p.text('birds: ' + birds.length, textX, p.height - 32 * 5)
       p.text('run: ' + run, textX, p.height - 32 * 4)
       p.text('speed: ' + PIPES_SPEED.toFixed(2), textX, p.height - 32 * 3)
-      p.text('fittest bird: ' + bird0Name, textX, p.height - 32 * 2)
+      p.text('fittest bird: ' + fittest, textX, p.height - 32 * 2)
       p.text('mutation rate: ' + MUTATION_RATE.toFixed(2), textX, p.height - 32 * 1)
-      p.text('distance: ' + bird0.distance, textX, p.height - 32 * 0)
+      p.text('distance: ' + birds[0].distance, textX, p.height - 32 * 0)
     }
 
     function gameOver () {
@@ -132,7 +136,7 @@ export function TrainingBird () {
       PIPES_SPEED = Number(random.float(3, 6).toFixed(2))
       pipes = [new Pipe(p ,pipeBodySprite,pipePeakSprite, PIPES_SPEED, PIPES_GAP)]
 
-      ga.nextGeneration(MUTATION_RATE, lastBirdBrain)
+      ga.nextGeneration(MUTATION_RATE)
 
       birds = ga.birds
       birdBrains = ga.birdBrains

@@ -2,8 +2,7 @@ import { Bird } from './Bird'
 import { P5CanvasInstance } from 'react-p5-wrapper'
 import { BirdBrain } from './BirdBrain'
 import p5 from 'p5'
-import { NeuralNetwork } from './NeuralNetwork'
-import { BirdNames } from '../pages/BirdNames'
+import { SavedBirds } from './SavedBirds'
 
 export class GeneticAlgorithm {
   p5: P5CanvasInstance
@@ -11,33 +10,40 @@ export class GeneticAlgorithm {
   birds: Bird[] = []
   birdSprites: p5.Image[]
   birdBrains: BirdBrain[] = []
-  birdNames: BirdNames
+  savedBirds: SavedBirds
 
   constructor (p5: P5CanvasInstance, totalBirds: number, birdSprites: p5.Image[]) {
     this.p5 = p5
     this.totalBirds = totalBirds
     this.birdSprites = birdSprites
-    this.birdNames = new BirdNames()
-
+    this.savedBirds = new SavedBirds()
   }
 
-  nextGeneration (mutationRate: number, lastBirdBrain?: string) {
-    this.birds = []
-    this.birdBrains = []
+  nextGeneration (mutationRate: number) {
+    if (this.savedBirds.list.length > 0) {
+      this.savedBirds.reset()
 
-    for (let i = 0; i < this.totalBirds; i++) {
-      const brain = lastBirdBrain
-        ? i === 0 // The first bird is a copy as it might be smarter than the mutated
-          ? NeuralNetwork.deserialize(lastBirdBrain)
-          : NeuralNetwork.deserialize(lastBirdBrain).mutate(mutationRate)
-        : undefined
+      this.birds = [this.savedBirds.fittest.bird]
+      this.birdBrains = [this.savedBirds.fittest.brain]
 
+      for (let i = 1; i < this.totalBirds; i++) {
+        const brain = this.savedBirds.fittest.brain.brain.mutate(mutationRate)
 
-      const bird = new Bird(this.p5, this.birdSprites)
-      const birdBrain = new BirdBrain(this.p5, bird, brain)
-      this.birds.push(bird)
-      this.birdBrains.push(birdBrain)
-      this.birdNames.add(birdBrain.brain.hash)
+        const bird = new Bird(this.p5, this.birdSprites)
+        const birdBrain = new BirdBrain(this.p5, bird, brain)
+        this.birds.push(bird)
+        this.birdBrains.push(birdBrain)
+        this.savedBirds.add(bird, birdBrain)
+      }
+    } else {
+      for (let i = 0; i < this.totalBirds; i++) {
+        const bird = new Bird(this.p5, this.birdSprites)
+        const birdBrain = new BirdBrain(this.p5, bird)
+
+        this.birds.push(bird)
+        this.birdBrains.push(birdBrain)
+        this.savedBirds.add(bird, birdBrain)
+      }
     }
   }
 }

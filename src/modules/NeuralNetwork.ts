@@ -1,7 +1,6 @@
 import random from 'random'
 import { ActivationFunction, sigmoid } from './ActivationFunction'
 import { Matrix } from './Matrix'
-import hashIt from 'hash-it'
 
 export class NeuralNetwork {
   inputNodes: number
@@ -178,10 +177,6 @@ export class NeuralNetwork {
     return nn
   }
 
-  get hash () {
-    return hashIt(this.serialize())
-  }
-
   copy () {
     return new NeuralNetwork(this)
   }
@@ -196,11 +191,12 @@ export class NeuralNetwork {
       return newVal
     }
 
-    this.weightsIH.map((func))
-    this.weightsHO.map(func)
-    this.biasH.map(func)
-    this.biasO.map(func)
+    const copy = this.copy()
+    copy.weightsIH.map((func))
+    copy.weightsHO.map(func)
+    copy.biasH.map(func)
+    copy.biasO.map(func)
 
-    return this
+    return copy
   }
 }

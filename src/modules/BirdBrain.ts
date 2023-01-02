@@ -4,7 +4,7 @@ import { Pipe } from './Pipe'
 import { P5CanvasInstance } from 'react-p5-wrapper'
 
 export class BirdBrain {
-  brain:NeuralNetwork
+  brain: NeuralNetwork
   bird: Bird
   p5: P5CanvasInstance
 

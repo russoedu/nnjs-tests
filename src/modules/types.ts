@@ -1,3 +1,6 @@
+import { Bird } from './Bird'
+import { BirdBrain } from './BirdBrain'
+
 // TODO You must download the doodles and save them in the doodles folder (public)
 export enum Doodle {
   AEROPLANE = '/doodles/_aeroplane.npy',
@@ -94,4 +97,11 @@ export enum TrainingStatus {
   MODEL_SET,
   TRAINING,
   TRAINED,
+}
+
+export type SavedBird = {
+  name: string,
+  birth: Date
+  brain: BirdBrain
+  bird: Bird
 }
