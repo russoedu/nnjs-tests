@@ -22,7 +22,7 @@ export class BirdBrain {
       pipes[0].x / this.p5.width,
       pipes[0].top / this.p5.height,
       pipes[0].bottom / this.p5.height,
-      (pipes[0].speed - 3) / 6,
+      (pipes[0].speed - 3) / 2,
     ]
 
     const output = this.brain.predict(input)

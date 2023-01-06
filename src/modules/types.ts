@@ -105,3 +105,9 @@ export type SavedBird = {
   brain: BirdBrain
   bird: Bird
 }
+
+export type SavedBirdTf = {
+  name: string,
+  birth: Date
+  bird: Bird
+}

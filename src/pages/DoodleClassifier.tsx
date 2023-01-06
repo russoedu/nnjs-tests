@@ -30,7 +30,7 @@ export function DoodleClassifier () {
       trainsData = p.loadBytes('doodles/trains1000.bin') as Bytes
     }
 
-    p.setup= () => {
+    p.setup = () => {
       p.createCanvas(280, 280)
       p.background(255)
 

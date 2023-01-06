@@ -90,6 +90,9 @@ export function FlappyBird () {
 
       bird.update()
       bird.show()
+      if (bird.offScreen()) {
+        gameOver()
+      }
 
       pipes.forEach(pipe => {
         if (pipe.getNewPipe) {

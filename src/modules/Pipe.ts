@@ -59,7 +59,7 @@ export class Pipe {
     return false
   }
   get getNewPipe () {
-    if (this.#x < this.p5.width * 0.6) {
+    if (this.#x < this.p5.width * 0.5) {
       this.halfScreen = true
     }
     if (this.halfScreen && !this.confirmedHalfScreen) {
