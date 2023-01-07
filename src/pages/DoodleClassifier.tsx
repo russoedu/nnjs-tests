@@ -42,7 +42,7 @@ export function DoodleClassifier () {
       nn = new NeuralNetwork(size, 64, 3)
 
       trainButton.mousePressed(function () {
-        const result = prepare(p, catsData, rainbowsData, trainsData, size)
+        const result = prepare(catsData, rainbowsData, trainsData, size)
         training = result.training
         testing = result.testing
 

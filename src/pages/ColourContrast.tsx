@@ -1,8 +1,8 @@
-import random from 'random'
 import { ReactP5Wrapper, P5CanvasInstance } from 'react-p5-wrapper'
 import { Container, Paper } from '@mui/material'
 import { NeuralNetwork } from '../modules/NeuralNetwork'
 import fontColorContrast from 'font-color-contrast'
+import p5 from 'p5'
 
 const meaning = 'Contrast is the contradiction in luminance or colour that makes an object (or its representation in an image or display) distinguishable. In visual perception of the real world, contrast is determined by the difference in the colour and brightness of the object and other objects within the same field of view. The human visual system is more sensitive to contrast than absolute luminance; we can perceive the world similarly regardless of the huge changes in illumination over the day or from place to place. The maximum contrast of an image is the contrast ratio or dynamic range. Images with a contrast ratio close to their medium\'s maximum possible contrast ratio experience a conservation of contrast, wherein any increase in contrast in some parts of the image must necessarily result in a decrease in contrast elsewhere. Brightening an image will increase contrast in dark areas but decrease contrast in bright areas, while darkening the image will have the opposite effect. Bleach bypass destroys contrast in both the darkest and brightest parts of an image while enhancing luminance contrast in areas of intermediate brightness.'
 
@@ -33,9 +33,9 @@ export function ColourContrast () {
   let predictionColour = Colour.WHITE
 
   function setNewColour () {
-    r = random.int(255)
-    g = random.int(255)
-    b = random.int(255)
+    r = Math.round(p5.prototype.random(255))
+    g = Math.round(p5.prototype.random(255))
+    b = Math.round(p5.prototype.random(255))
   }
 
   function getNormalisedColour (colour: number) {

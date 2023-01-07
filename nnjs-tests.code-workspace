@@ -6,14 +6,16 @@
   ],
   "settings": {
     "files.exclude": {
+      "dist": true,
       ".editorconfig": true,
       ".eslintignore": true,
-      // ".eslintrc.js": true,
-      // ".gitignore": true,
+      ".eslintrc.js": true,
+      ".gitignore": true,
       "node_modules": true,
+      "jest.config.js": true,
       "package-lock.json": true,
-      // "tsconfig.json": true,
-      // "tsconfig.node.json": true,
+      "tsconfig.json": true,
+      "tsconfig.node.json": true,
       "vite.config.ts": true
     },
     "typescript.tsdk": "node_modules\\typescript\\lib"

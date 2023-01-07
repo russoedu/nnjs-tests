@@ -17,12 +17,12 @@ export class Pipe {
   halfScreen = false
   confirmedHalfScreen = false
 
-  constructor (p5: P5CanvasInstance, pipeBodySprite: p5.Image, pipePeakSprite: p5.Image , speed = 3, gap = 180) {
+  constructor (canvas: P5CanvasInstance, pipeBodySprite: p5.Image, pipePeakSprite: p5.Image , speed = 3, gap = 180) {
     this.#gap = gap
-    this.#top = p5.random(p5.height / 6, 3 / 4 * p5.height)
+    this.#top = p5.prototype.random(canvas.height / 6, 3 / 4 * canvas.height)
     this.#bottom = this.#top + this.#gap
 
-    this.#x = p5.width
+    this.#x = canvas.width
     this.#y = 80
     this.speed = speed
 
@@ -32,7 +32,7 @@ export class Pipe {
     this.pipeBodySprite = pipeBodySprite
     this.pipePeakSprite = pipePeakSprite
 
-    this.p5 = p5
+    this.p5 = canvas
   }
 
   hits (bird: Bird) {

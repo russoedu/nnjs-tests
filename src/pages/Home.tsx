@@ -57,7 +57,12 @@ export function Home () {
     {
       title:       'Smarty Bird',
       link:        'smarty-bird',
-      description: 'Already trained neural network that plays Flappy Bird .',
+      description: 'Already trained neural network that plays Flappy Bird.',
+    },
+    {
+      title:       'Smart Cars',
+      link:        'smart-cars',
+      description: 'Self driving cars neuro evolution.',
     },
   ]
 

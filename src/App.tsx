@@ -12,6 +12,7 @@ import { DoodleClassifier } from './pages/DoodleClassifier'
 import { DoodleVisualiser } from './pages/DoodleVisualiser'
 import { FlappyBird } from './pages/FlappyBird'
 import { Home } from './pages/Home'
+import { SelfDrivingCars } from './pages/SelfDrivingCars'
 import { SmartyBird } from './pages/SmartyBird'
 import { TrainingBird } from './pages/TrainingBird'
 import { XOR } from './pages/XOR'
@@ -54,6 +55,7 @@ if (container) {
             <Route path='/flappy-bird' element={<FlappyBird/>}/>
             <Route path='/training-bird' element={<TrainingBird/>}/>
             <Route path='/smarty-bird' element={<SmartyBird/>}/>
+            <Route path='/smart-cars' element={<SelfDrivingCars/>}/>
           </Routes>
         </BrowserRouter>
       </CssBaseline>

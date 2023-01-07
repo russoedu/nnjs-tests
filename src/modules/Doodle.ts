@@ -30,7 +30,7 @@ export function testAll (nn: NeuralNetwork, testing: CategoryEntry[], index: num
 
   return percent
 }
-export function prepare (p: p5, catsData: Bytes, rainbowsData: Bytes, trainsData: Bytes, size: number) {
+export function prepare (catsData: Bytes, rainbowsData: Bytes, trainsData: Bytes, size: number) {
   const training: CategoryEntry[] = []
   const testing: CategoryEntry[] = []
 
@@ -41,7 +41,7 @@ export function prepare (p: p5, catsData: Bytes, rainbowsData: Bytes, trainsData
   prepareData(cats, catsData, Category.CAT, training, testing, size)
   prepareData(rainbows, rainbowsData, Category.RAINBOW, training, testing, size)
   prepareData(trains, trainsData, Category.TRAIN, training, testing, size)
-  p.shuffle(training, true)
+  p5.prototype.shuffle(training, true)
 
   return {
     training,

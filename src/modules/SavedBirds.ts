@@ -6,9 +6,9 @@ import { SavedBird } from './types'
 export class SavedBirds {
   list: SavedBird[] = []
 
-  add (bird: Bird, brain: BirdBrain) {
+  push (bird: Bird, brain: BirdBrain, name?: string) {
     const newBird = {
-      name: uniqueNamesGenerator({
+      name: name || uniqueNamesGenerator({
         dictionaries: [adjectives, animals],
         length:       2,
         style:        'capital',

@@ -1,4 +1,4 @@
-import random from 'random'
+import p5 from 'p5'
 
 export class Matrix {
   rows: number
@@ -41,7 +41,7 @@ export class Matrix {
   }
 
   randomize () {
-    return this.map(() => random.float(-1, 1))
+    return this.map(() => p5.prototype.random(-1, 1))
   }
 
   add (n: number|Matrix) {

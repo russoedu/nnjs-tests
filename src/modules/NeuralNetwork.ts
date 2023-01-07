@@ -1,4 +1,4 @@
-import random from 'random'
+import p5 from 'p5'
 import { ActivationFunction, sigmoid } from './ActivationFunction'
 import { Matrix } from './Matrix'
 
@@ -183,7 +183,7 @@ export class NeuralNetwork {
 
   mutate (mutationRate: number) {
     const func = (val: number) => {
-      const valRate = random.float(-1 * mutationRate, mutationRate)
+      const valRate = p5.prototype.random(-1 * mutationRate, mutationRate)
       const tempVal = val + valRate * val
       const newVal = tempVal >= 0
         ? Math.min(tempVal, 1)

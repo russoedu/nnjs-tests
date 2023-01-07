@@ -1,1 +1,3 @@
-# nnjs
+# nnjs-tests
+
+Neural network playground

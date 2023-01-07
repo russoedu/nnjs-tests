@@ -1,10 +1,9 @@
 import { Button, Container, Paper } from '@mui/material'
 import p5 from 'p5'
-import random from 'random'
 import { P5CanvasInstance, ReactP5Wrapper } from 'react-p5-wrapper'
 import { Bird } from '../modules/Bird'
 import { BirdBrain } from '../modules/BirdBrain'
-import { GeneticAlgorithm } from '../modules/GeneticAlgorithm'
+import { BirdGeneticAlgorithm } from '../modules/BirdGeneticAlgorithm'
 import { Pipe } from '../modules/Pipe'
 
 export function TrainingBird () {
@@ -14,7 +13,7 @@ export function TrainingBird () {
   let MUTATION_RATE = 0.5
   const BREAK_DISTANCE = 100000
 
-  let ga: GeneticAlgorithm
+  let ga: BirdGeneticAlgorithm
   let birds: Bird[] = []
   let birdBrains: BirdBrain[] = []
   let run = 1
@@ -30,7 +29,7 @@ export function TrainingBird () {
   let pipePeakSprite: p5.Image
   let birdSprites: p5.Image[]
 
-
+  let loadSmartest = false
 
   function sketch (p: P5CanvasInstance) {
     p.preload = () => {
@@ -40,7 +39,7 @@ export function TrainingBird () {
         p.loadImage('flappy-bird/rocket-frame-0.svg'),
         p.loadImage('flappy-bird/rocket-frame-1.svg'),
       ]
-      ga = new GeneticAlgorithm(p, TOTAL_BIRDS, birdSprites)
+      ga = new BirdGeneticAlgorithm(p, TOTAL_BIRDS, birdSprites)
     }
     p.setup = () => {
       p.createCanvas(800, 600)
@@ -54,6 +53,10 @@ export function TrainingBird () {
         }
       })
 
+      const loadButton = p.select('#load') as p5.Element
+      loadButton.mouseReleased(function () {
+        loadSmartest = true
+      })
       reset()
     }
 
@@ -156,7 +159,7 @@ export function TrainingBird () {
     function gameOver () {
       p.textSize(64)
       p.textAlign(p.CENTER, p.CENTER)
-      p.text('GAMEOVER', p.width / 2, p.height / 2)
+      p.text('GAME OVER', p.width / 2, p.height / 2)
       p.textSize(35)
       p.text('press SPACE to restart or wait', p.width / 2, p.height / 2 + 42)
       p.textAlign(p.LEFT, p.BASELINE)
@@ -168,10 +171,11 @@ export function TrainingBird () {
 
     function reset () {
       isOver = false
-      PIPES_SPEED = Number(random.float(3, 5).toFixed(2))
+      PIPES_SPEED = Number(p5.prototype.random(3, 5).toFixed(2))
       pipes = [new Pipe(p ,pipeBodySprite,pipePeakSprite, PIPES_SPEED, PIPES_GAP)]
 
-      ga.nextGeneration(MUTATION_RATE)
+      ga.nextGeneration(MUTATION_RATE, loadSmartest)
+      loadSmartest = false
 
       birds = ga.birds
       birdBrains = ga.birdBrains
@@ -184,6 +188,7 @@ export function TrainingBird () {
       <Paper className='canvas-paper' elevation={3}>
         <ReactP5Wrapper className='canvas' sketch={sketch}/>
         <Button id="save">save smartest</Button>
+        <Button id="load">add the smartest known bird in the group</Button>
       </Paper>
     </Container>
   )
