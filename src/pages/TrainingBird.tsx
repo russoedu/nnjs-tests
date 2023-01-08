@@ -1,10 +1,11 @@
-import { Button, Container, Paper } from '@mui/material'
+import { Button, Container, Grid, Paper } from '@mui/material'
 import p5 from 'p5'
 import { P5CanvasInstance, ReactP5Wrapper } from 'react-p5-wrapper'
 import { Bird } from '../modules/Bird'
 import { BirdBrain } from '../modules/BirdBrain'
 import { BirdGeneticAlgorithm } from '../modules/BirdGeneticAlgorithm'
 import { Pipe } from '../modules/Pipe'
+import './TrainingBird.css'
 
 export function TrainingBird () {
   const TOTAL_BIRDS = 1000
@@ -29,8 +30,6 @@ export function TrainingBird () {
   let pipePeakSprite: p5.Image
   let birdSprites: p5.Image[]
 
-  let loadSmartest = false
-
   function sketch (p: P5CanvasInstance) {
     p.preload = () => {
       pipeBodySprite = p.loadImage('flappy-bird/pipe.svg')
@@ -43,7 +42,7 @@ export function TrainingBird () {
     }
     p.setup = () => {
       p.createCanvas(800, 600)
-      loopsPerFrameSlider = p.createSlider(1, 1000, 1)
+      loopsPerFrameSlider = p.select('#slider') as p5.Element
 
       const saveButton = p.select('#save') as p5.Element
       saveButton.mouseReleased(function () {
@@ -51,11 +50,6 @@ export function TrainingBird () {
           const name = `${ga.savedBirds.fittest.name}-${PIPES_SPEED}-${ga.savedBirds.fittest.bird.distance}.json`
           p.saveJSON(ga.savedBirds.fittest.brain.brain, name)
         }
-      })
-
-      const loadButton = p.select('#load') as p5.Element
-      loadButton.mouseReleased(function () {
-        loadSmartest = true
       })
       reset()
     }
@@ -174,8 +168,7 @@ export function TrainingBird () {
       PIPES_SPEED = Number(p5.prototype.random(3, 5).toFixed(2))
       pipes = [new Pipe(p ,pipeBodySprite,pipePeakSprite, PIPES_SPEED, PIPES_GAP)]
 
-      ga.nextGeneration(MUTATION_RATE, loadSmartest)
-      loadSmartest = false
+      ga.nextGeneration(MUTATION_RATE)
 
       birds = ga.birds
       birdBrains = ga.birdBrains
@@ -187,8 +180,12 @@ export function TrainingBird () {
     <Container className='canvas-container'>
       <Paper className='canvas-paper' elevation={3}>
         <ReactP5Wrapper className='canvas' sketch={sketch}/>
+        <Grid container>
+          <Grid item xs={12}>
+            <input id='slider' type="range" min="1" max="1000" />
+          </Grid>
+        </Grid>
         <Button id="save">save smartest</Button>
-        <Button id="load">add the smartest known bird in the group</Button>
       </Paper>
     </Container>
   )

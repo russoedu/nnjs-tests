@@ -3,8 +3,6 @@ import { P5CanvasInstance } from 'react-p5-wrapper'
 import { BirdBrain } from './BirdBrain'
 import p5 from 'p5'
 import { SavedBirds } from './SavedBirds'
-import { NeuralNetwork } from './NeuralNetwork'
-import { smartestKnownBird } from './types'
 
 export class BirdGeneticAlgorithm {
   canvas: P5CanvasInstance
@@ -21,7 +19,7 @@ export class BirdGeneticAlgorithm {
     this.savedBirds = new SavedBirds()
   }
 
-  nextGeneration (mutationRate: number, loadSmartest = false) {
+  nextGeneration (mutationRate: number) {
     if (this.savedBirds.list.length > 0) {
       this.savedBirds.reset()
 
@@ -46,15 +44,6 @@ export class BirdGeneticAlgorithm {
         this.birdBrains.push(birdBrain)
         this.savedBirds.push(bird, birdBrain)
       }
-    }
-
-    if (loadSmartest) {
-      const bird = new Bird(this.canvas, this.birdSprites)
-      const brain = NeuralNetwork.deserialize(smartestKnownBird)
-      const birdBrain = new BirdBrain(this.canvas, bird, brain)
-      this.birds.push(bird)
-      this.birdBrains.push(birdBrain)
-      this.savedBirds.push(bird, birdBrain, 'SMARTEST BIRD')
     }
   }
 }
